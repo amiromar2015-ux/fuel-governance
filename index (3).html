@@ -1,0 +1,1783 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>نظام حوكمة المحروقات – بلدية المدينة</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:#0f1923;--ink2:#1e2d3d;--surface:#f4f2ed;--card:#fff;
+  --accent:#1a6b3c;--accent2:#27ae60;--accent-light:#e8f5ee;
+  --blue:#1a4a7a;--red:#b03a2e;--yellow:#c49a00;--orange:#c0550a;
+  --border:#ddd8ce;--muted:#7a7469;
+  --shadow:0 3px 16px rgba(15,25,35,.09);--shadow-lg:0 10px 40px rgba(15,25,35,.16);
+  --p1:#1a6b3c;--p2:#1a4a7a;--p3:#6d2c8a;--p4:#c0550a;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Cairo',sans-serif;background:var(--surface);color:var(--ink);min-height:100vh;direction:rtl}
+
+/* NAV */
+nav{background:var(--ink);padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;height:60px;position:sticky;top:0;z-index:100;box-shadow:0 2px 16px rgba(0,0,0,.4)}
+.nav-brand{display:flex;align-items:center;gap:.6rem}
+.nav-logo{width:34px;height:34px;background:var(--accent);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:1.1rem}
+.nav-brand span{font-family:'Tajawal',sans-serif;font-weight:800;font-size:1.05rem;color:#fff}
+.nav-tabs{display:flex;gap:.2rem}
+.nav-tab{padding:.45rem 1rem;border-radius:7px;border:none;background:transparent;color:rgba(255,255,255,.6);font-family:'Cairo',sans-serif;font-size:.85rem;font-weight:600;cursor:pointer;transition:all .2s}
+.nav-tab:hover{background:rgba(255,255,255,.08);color:#fff}
+.nav-tab.active{background:var(--accent);color:#fff}
+.nav-user{display:flex;align-items:center;gap:.6rem}
+.user-info strong{display:block;color:#fff;font-size:.85rem}
+.user-info small{color:rgba(255,255,255,.5);font-size:.75rem}
+.avatar{width:34px;height:34px;border-radius:50%;background:var(--accent2);display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;font-size:.82rem}
+.project-badge{padding:.2rem .7rem;border-radius:20px;font-size:.72rem;font-weight:700;color:#fff}
+
+/* PAGES */
+.page{display:none;padding:1.75rem;max-width:1400px;margin:0 auto}
+.page.active{display:block}
+
+/* PAGE HEADER */
+.page-header{margin-bottom:1.75rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem}
+.page-title h1{font-family:'Tajawal',sans-serif;font-size:1.6rem;font-weight:800}
+.page-title p{color:var(--muted);font-size:.88rem;margin-top:.2rem}
+
+/* BUTTONS */
+.btn{padding:.55rem 1.2rem;border-radius:9px;border:none;font-family:'Cairo',sans-serif;font-size:.88rem;font-weight:600;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:.4rem}
+.btn-primary{background:var(--accent);color:#fff}.btn-primary:hover{background:#145530;transform:translateY(-1px)}
+.btn-secondary{background:var(--card);color:var(--ink);border:1.5px solid var(--border)}.btn-secondary:hover{background:var(--surface)}
+.btn-red{background:var(--red);color:#fff}
+.btn-sm{padding:.35rem .8rem;font-size:.8rem}
+
+/* KPI */
+.kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:1.1rem;margin-bottom:1.75rem}
+.kpi-card{background:var(--card);border-radius:14px;padding:1.35rem;box-shadow:var(--shadow);border:1.5px solid var(--border);position:relative;overflow:hidden;transition:transform .2s}
+.kpi-card:hover{transform:translateY(-2px)}
+.kpi-card::before{content:'';position:absolute;top:0;right:0;width:4px;height:100%;background:var(--accent)}
+.kpi-card.blue::before{background:var(--blue)}
+.kpi-card.red::before{background:var(--red)}
+.kpi-card.yellow::before{background:var(--yellow)}
+.kpi-label{font-size:.75rem;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.4px;margin-bottom:.4rem}
+.kpi-value{font-family:'Tajawal',sans-serif;font-size:1.85rem;font-weight:800;line-height:1}
+.kpi-sub{font-size:.78rem;color:var(--muted);margin-top:.35rem}
+.kpi-icon{position:absolute;bottom:.9rem;left:1rem;font-size:2.2rem;opacity:.07}
+
+/* PROJECT CARDS (GM view) */
+.projects-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.25rem;margin-bottom:1.75rem}
+.project-card{background:var(--card);border-radius:16px;padding:1.5rem;box-shadow:var(--shadow);border:1.5px solid var(--border);border-top:4px solid var(--accent);transition:transform .2s;cursor:pointer}
+.project-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg)}
+.project-card.p1{border-top-color:var(--p1)}
+.project-card.p2{border-top-color:var(--p2)}
+.project-card.p3{border-top-color:var(--p3)}
+.project-card.p4{border-top-color:var(--p4)}
+.project-card-name{font-family:'Tajawal',sans-serif;font-size:1.1rem;font-weight:800;margin-bottom:1rem}
+.project-stat{display:flex;justify-content:space-between;font-size:.85rem;padding:.3rem 0;border-bottom:1px solid var(--border)}
+.project-stat:last-child{border-bottom:none}
+.project-stat span:last-child{font-weight:700}
+
+/* CARD */
+.card{background:var(--card);border-radius:14px;padding:1.35rem;box-shadow:var(--shadow);border:1.5px solid var(--border);margin-bottom:1.35rem}
+.card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.1rem;padding-bottom:.9rem;border-bottom:1.5px solid var(--border)}
+.card-title{font-weight:700;font-size:.95rem;display:flex;align-items:center;gap:.45rem}
+
+/* FORM */
+.form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:1.1rem}
+.form-group{display:flex;flex-direction:column;gap:.35rem}
+.form-label{font-size:.82rem;font-weight:600;color:var(--ink2)}
+.form-label span{color:var(--red)}
+.form-control{padding:.65rem .9rem;border:1.5px solid var(--border);border-radius:9px;font-family:'Cairo',sans-serif;font-size:.88rem;background:var(--surface);color:var(--ink);transition:border-color .2s,box-shadow .2s;width:100%}
+.form-control:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(26,107,60,.1);background:#fff}
+
+/* TABLE */
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:.85rem}
+thead tr{background:var(--ink);color:#fff}
+thead th{padding:.75rem .9rem;text-align:right;font-weight:600;white-space:nowrap}
+tbody tr{border-bottom:1px solid var(--border);transition:background .15s}
+tbody tr:hover{background:rgba(26,107,60,.04)}
+tbody td{padding:.7rem .9rem;white-space:nowrap}
+
+/* BADGE */
+.badge{display:inline-flex;align-items:center;gap:.25rem;padding:.2rem .65rem;border-radius:20px;font-size:.75rem;font-weight:700}
+.badge-green{background:#d5f5e3;color:#1a6b3c}
+.badge-yellow{background:#fef9e7;color:#a07800}
+.badge-red{background:#fde8e6;color:#b03a2e}
+.badge-blue{background:#d6eaf8;color:#1a4a7a}
+.badge-purple{background:#f0e6f8;color:#6d2c8a}
+
+/* PROGRESS */
+.progress-wrap{background:#eee;border-radius:20px;height:7px;overflow:hidden}
+.progress-bar{height:100%;border-radius:20px;transition:width .6s}
+.pb-green{background:var(--accent2)}
+.pb-yellow{background:var(--yellow)}
+.pb-red{background:var(--red)}
+
+/* ALERT */
+.alert{padding:.8rem 1.1rem;border-radius:10px;font-size:.87rem;font-weight:500;margin-bottom:.9rem;display:flex;align-items:center;gap:.65rem;animation:slideIn .3s ease}
+.alert-success{background:#d5f5e3;color:#1a6b3c;border:1px solid #a9dfbf}
+.alert-error{background:#fde8e6;color:#b03a2e;border:1px solid #f5b7b1}
+.alert-warn{background:#fef9e7;color:#a07800;border:1px solid #f9e79f}
+@keyframes slideIn{from{transform:translateY(-8px);opacity:0}to{transform:translateY(0);opacity:1}}
+
+/* LOGIN */
+#loginPage{display:flex;align-items:center;justify-content:center;min-height:100vh;background:linear-gradient(135deg,#0f1923 0%,#1a3a2a 100%);position:fixed;inset:0;z-index:999}
+.login-card{background:var(--card);border-radius:22px;padding:2.5rem 2.2rem;width:100%;max-width:400px;box-shadow:var(--shadow-lg);text-align:center}
+.login-logo{width:64px;height:64px;background:var(--accent);border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:1.8rem;margin:0 auto 1.25rem}
+.login-title{font-family:'Tajawal',sans-serif;font-size:1.5rem;font-weight:800;margin-bottom:.25rem}
+.login-sub{color:var(--muted);font-size:.87rem;margin-bottom:1.75rem}
+.login-card .form-group{margin-bottom:.9rem;text-align:right}
+
+/* MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(15,25,35,.6);z-index:500;align-items:center;justify-content:center;backdrop-filter:blur(3px)}
+.modal-overlay.open{display:flex}
+.modal{background:var(--card);border-radius:18px;padding:1.75rem;width:95%;max-width:580px;max-height:90vh;overflow-y:auto;box-shadow:var(--shadow-lg);animation:modalIn .22s ease}
+@keyframes modalIn{from{transform:scale(.95);opacity:0}to{transform:scale(1);opacity:1}}
+.modal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.35rem}
+.modal-title{font-size:1.05rem;font-weight:700}
+.modal-close{width:30px;height:30px;border-radius:50%;border:none;background:var(--surface);cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center}
+
+/* BAR CHART */
+.bar-chart{display:flex;flex-direction:column;gap:.7rem}
+.bar-item{}
+.bar-label{display:flex;justify-content:space-between;font-size:.8rem;margin-bottom:.28rem}
+.bar-label span:last-child{font-weight:700}
+
+/* EMPTY */
+.empty-state{text-align:center;padding:2.5rem 1rem;color:var(--muted)}
+.empty-state .icon{font-size:2.5rem;margin-bottom:.75rem;opacity:.4}
+
+/* DOT */
+.dot{width:7px;height:7px;border-radius:50%;background:var(--red);display:inline-block;animation:pulse 1.5s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+
+/* GM FILTER BAR */
+.filter-bar{display:flex;gap:.75rem;align-items:center;flex-wrap:wrap;background:var(--card);padding:.9rem 1.25rem;border-radius:12px;border:1.5px solid var(--border);margin-bottom:1.35rem;box-shadow:var(--shadow)}
+.filter-label{font-size:.82rem;font-weight:600;color:var(--muted);white-space:nowrap}
+.project-pill{padding:.35rem .9rem;border-radius:20px;border:1.5px solid var(--border);background:var(--surface);font-size:.8rem;font-weight:600;cursor:pointer;transition:all .2s}
+.project-pill.active,.project-pill:hover{color:#fff}
+.project-pill.all.active{background:var(--ink);border-color:var(--ink)}
+.project-pill.p1.active{background:var(--p1);border-color:var(--p1)}
+.project-pill.p2.active{background:var(--p2);border-color:var(--p2)}
+.project-pill.p3.active{background:var(--p3);border-color:var(--p3)}
+.project-pill.p4.active{background:var(--p4);border-color:var(--p4)}
+
+@media(max-width:768px){nav{padding:0 1rem}.nav-tabs{display:none}.page{padding:1rem}.kpi-grid{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="loginPage">
+  <div class="login-card">
+    <div class="login-logo">🧹</div>
+    <div class="login-title">نظافة مشاريع المدينة المنورة</div>
+    <div class="login-sub">نظام حوكمة فواتير المحروقات</div>
+    <div id="loginError"></div>
+    <div class="form-group">
+      <label class="form-label">اسم المستخدم</label>
+      <input class="form-control" id="loginUser" placeholder="username" onkeydown="if(event.key==='Enter')document.getElementById('loginPass').focus()" />
+    </div>
+    <div class="form-group" style="margin-bottom:1.4rem">
+      <label class="form-label">كلمة السر</label>
+      <div style="position:relative">
+        <input class="form-control" type="password" id="loginPass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()" style="padding-left:2.5rem"/>
+        <span onclick="togglePass()" style="position:absolute;left:.75rem;top:50%;transform:translateY(-50%);cursor:pointer;opacity:.45">👁</span>
+      </div>
+    </div>
+    <button class="btn btn-primary" style="width:100%;justify-content:center;padding:.8rem" onclick="doLogin()">دخول ←</button>
+    <div style="margin-top:1.1rem;background:var(--surface);border-radius:9px;padding:.9rem;font-size:.78rem;color:var(--muted);text-align:right">
+      <strong style="color:var(--ink);display:block;margin-bottom:.35rem">🔑 بيانات تجريبية:</strong>
+      👔 مدير عام: <strong>admin</strong> / <strong>admin123</strong><br>
+      👨‍💼 مشرف: أضفه من صفحة المستخدمين<br>
+      👷 موظف قباء: <strong>qoba</strong> / <strong>1234</strong>
+    </div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav id="mainNav" style="display:none">
+  <div class="nav-brand">
+    <div class="nav-logo">🧹</div>
+    <span>نظافة مشاريع المدينة المنورة</span>
+  </div>
+  <div class="nav-tabs" id="navTabs"></div>
+  <div class="nav-user">
+    <div class="user-info">
+      <strong id="navName">—</strong>
+      <small id="navProject">—</small>
+    </div>
+    <div class="avatar" id="navAvatar">؟</div>
+    <button class="btn btn-secondary btn-sm" onclick="refreshCloud()">🔄</button>
+    <button class="btn btn-secondary btn-sm" onclick="logout()">خروج</button>
+  </div>
+</nav>
+<div id="dbStatusBar"></div>
+
+<!-- ══ PAGE: GM DASHBOARD ══ -->
+<div class="page" id="pageGM">
+  <div class="page-header">
+    <div class="page-title">
+      <h1>🏆 لوحة المدير العام</h1>
+      <p id="gmDate">—</p>
+    </div>
+    <div style="display:flex;gap:.6rem;flex-wrap:wrap;align-items:center">
+      <button class="btn btn-secondary btn-sm" onclick="renderGM()">🔄 تحديث</button>
+      <button class="btn btn-green btn-sm" onclick="exportBackup()">💾 نسخة احتياطية</button>
+      <label class="btn btn-secondary btn-sm" style="cursor:pointer;margin:0">
+        📂 استيراد نسخة
+        <input type="file" accept=".json" onchange="importBackup(event)" style="display:none"/>
+      </label>
+    </div>
+  </div>
+  <div id="backupAlert"></div>
+
+  <!-- KPIs -->
+  <div class="kpi-grid">
+    <div class="kpi-card"><div class="kpi-label">إجمالي الاستهلاك – اليوم</div><div class="kpi-value" id="gmQtyToday">0</div><div class="kpi-sub">لتر</div><div class="kpi-icon">⛽</div></div>
+    <div class="kpi-card blue"><div class="kpi-label">إجمالي المبلغ – اليوم</div><div class="kpi-value" id="gmAmtToday">0</div><div class="kpi-sub">ر.س</div><div class="kpi-icon">💰</div></div>
+    <div class="kpi-card"><div class="kpi-label">إجمالي الاستهلاك – الشهر</div><div class="kpi-value" id="gmQtyMonth">0</div><div class="kpi-sub">لتر</div><div class="kpi-icon">📅</div></div>
+    <div class="kpi-card blue"><div class="kpi-label">إجمالي المبلغ – الشهر</div><div class="kpi-value" id="gmAmtMonth">0</div><div class="kpi-sub">ر.س</div><div class="kpi-icon">💳</div></div>
+    <div class="kpi-card red"><div class="kpi-label">مركبات تجاوزت الحد</div><div class="kpi-value" id="gmViolations" style="color:var(--red)">0</div><div class="kpi-sub">هذا الشهر</div><div class="kpi-icon">🚨</div></div>
+    <div class="kpi-card yellow"><div class="kpi-label">تحذير كفاءة</div><div class="kpi-value" id="gmEffWarn" style="color:var(--yellow)">0</div><div class="kpi-sub">استهلاك أعلى من المعيار</div><div class="kpi-icon">⚡</div></div>
+  </div>
+
+  <!-- Project Cards -->
+  <div class="projects-grid" id="projectCards"></div>
+
+  <!-- Comparison -->
+  <div class="card">
+    <div class="card-header"><div class="card-title">📊 مقارنة المشاريع – الشهر الحالي</div></div>
+    <div class="bar-chart" id="projectCompare"></div>
+  </div>
+
+  <!-- Alerts -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">🚨 تنبيهات فورية</div>
+      <span class="dot"></span>
+    </div>
+    <div id="alertsList"></div>
+  </div>
+
+  <!-- All invoices -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">📋 جميع الفواتير</div>
+      <div style="display:flex;gap:.65rem;align-items:center;flex-wrap:wrap">
+        <select class="form-control" style="width:180px;padding:.4rem .7rem;font-size:.82rem" id="gmProjectFilter" onchange="renderGMTable()">
+          <option value="">كل المشاريع</option>
+        </select>
+        <input class="form-control" style="width:180px;padding:.4rem .7rem;font-size:.82rem" placeholder="🔍 بحث..." oninput="gmSearch(this.value)"/>
+        <button class="btn btn-secondary btn-sm" onclick="exportAllCSV()">📥 CSV</button>
+      </div>
+    </div>
+    <div class="table-wrap" id="gmInvoicesTable"></div>
+  </div>
+</div>
+
+<!-- ══ PAGE: EMPLOYEE ENTRY ══ -->
+<div class="page" id="pageEntry">
+  <div class="page-header">
+    <div class="page-title">
+      <h1>⛽ إدخال فاتورة محروقات</h1>
+      <p id="entryProjectLabel">—</p>
+    </div>
+    <div id="entryAlertArea"></div>
+  </div>
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">📝 بيانات الفاتورة</div>
+      <span style="font-size:.78rem;color:var(--muted)">الحقول <span style="color:var(--red)">*</span> إلزامية</span>
+    </div>
+    <div class="form-grid">
+      <div class="form-group">
+        <label class="form-label">التاريخ <span>*</span></label>
+        <input type="date" class="form-control" id="fDate"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">رقم اللوحة <span>*</span></label>
+        <select class="form-control" id="fVehicle" onchange="onVehicleChange()">
+          <option value="">— اختر —</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">نوع المركبة</label>
+        <input class="form-control" id="fType" readonly style="opacity:.65"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">الكمية (لتر) <span>*</span></label>
+        <input type="number" class="form-control" id="fQty" placeholder="80" oninput="calcTotal()"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">سعر اللتر (ر.س) <span>*</span></label>
+        <input type="number" class="form-control" id="fPrice" value="0.62" step="0.01" oninput="calcTotal()"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">المبلغ قبل الضريبة</label>
+        <input class="form-control" id="fSubtotal" readonly style="opacity:.7"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">ضريبة القيمة المضافة (15%)</label>
+        <input class="form-control" id="fVat" readonly style="background:#fff0f0;color:var(--red);font-weight:700"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">الإجمالي شامل الضريبة</label>
+        <input class="form-control" id="fTotal" readonly style="background:#fff8e6;font-weight:700;color:var(--orange)"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">نوع العداد <span>*</span></label>
+        <select class="form-control" id="fMeterType" onchange="updateMeterLabel()">
+          <option value="km">كيلومتر (كم)</option>
+          <option value="hours">ساعات تشغيل</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label" id="fMeterLabel">قراءة العداد (كم) <span>*</span></label>
+        <input type="number" class="form-control" id="fKm" placeholder="125400" oninput="calcAll()"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">آخر قراءة مسجلة</label>
+        <input class="form-control" id="fLastMeter" readonly style="opacity:.75"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">الفرق (مسافة / ساعات)</label>
+        <input class="form-control" id="fMeterDiff" readonly style="opacity:.75"/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">كفاءة الاستهلاك</label>
+        <input class="form-control" id="fEff" readonly/>
+      </div>
+      <div class="form-group">
+        <label class="form-label">رقم الفاتورة <span>*</span></label>
+        <input class="form-control" id="fInvNo" placeholder="INV-001"/>
+      </div>
+    </div>
+    <div class="form-group" style="margin-top:1rem">
+      <label class="form-label">ملاحظات</label>
+      <textarea class="form-control" id="fNotes" rows="2" placeholder="أي ملاحظات..."></textarea>
+    </div>
+    <div id="limitWarn" style="margin-top:.9rem;display:none"></div>
+    <div id="effWarn" style="margin-top:.5rem;display:none"></div>
+    <div style="margin-top:1.25rem;display:flex;gap:.9rem;flex-wrap:wrap">
+      <button class="btn btn-primary" onclick="submitInvoice()">💾 حفظ الفاتورة</button>
+      <button class="btn btn-secondary" onclick="clearForm()">🗑️ مسح</button>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">📋 فواتيري اليوم</div>
+      <span class="badge badge-green" id="todayCount">0</span>
+    </div>
+    <div id="myInvoicesWrap">
+      <div class="empty-state"><div class="icon">📭</div><p>لا توجد فواتير اليوم</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PAGE: PROJECT DASHBOARD (for employee) ══ -->
+<div class="page" id="pageProjectDash">
+  <div class="page-header">
+    <div class="page-title">
+      <h1 id="projDashTitle">📊 Dashboard</h1>
+      <p id="projDashSub">—</p>
+    </div>
+    <button class="btn btn-secondary btn-sm" onclick="renderProjectDash()">🔄 تحديث</button>
+  </div>
+  <div class="kpi-grid">
+    <div class="kpi-card"><div class="kpi-label">استهلاك اليوم</div><div class="kpi-value" id="pdQtyToday">0</div><div class="kpi-sub">لتر</div><div class="kpi-icon">⛽</div></div>
+    <div class="kpi-card blue"><div class="kpi-label">مبلغ اليوم</div><div class="kpi-value" id="pdAmtToday">0</div><div class="kpi-sub">ر.س</div><div class="kpi-icon">💰</div></div>
+    <div class="kpi-card"><div class="kpi-label">استهلاك الشهر</div><div class="kpi-value" id="pdQtyMonth">0</div><div class="kpi-sub">لتر</div><div class="kpi-icon">📅</div></div>
+    <div class="kpi-card red"><div class="kpi-label">مركبات تجاوزت الحد</div><div class="kpi-value" id="pdViolations" style="color:var(--red)">0</div><div class="kpi-sub">هذا الشهر</div><div class="kpi-icon">🚨</div></div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem">
+    <div class="card">
+      <div class="card-header"><div class="card-title">🚗 حالة المركبات</div></div>
+      <div class="bar-chart" id="pdVehicleBars"></div>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-title">🚨 تنبيهات</div><span class="dot"></span></div>
+      <div id="pdAlerts"></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">📋 فواتير المشروع</div>
+      <div style="display:flex;gap:.6rem">
+        <input class="form-control" style="width:180px;padding:.4rem .7rem;font-size:.82rem" placeholder="🔍 بحث..." oninput="pdSearch(this.value)"/>
+        <button class="btn btn-secondary btn-sm" onclick="exportProjectCSV()">📥 CSV</button>
+      </div>
+    </div>
+    <div class="table-wrap" id="pdInvoicesTable"></div>
+  </div>
+</div>
+
+<!-- ══ PAGE: VEHICLES ══ -->
+<div class="page" id="pageVehicles">
+  <div class="page-header">
+    <div class="page-title"><h1>🚗 إدارة المركبات</h1><p id="vehiclesProjectLabel">—</p></div>
+    <button class="btn btn-primary" onclick="openAddVehicle()">➕ إضافة مركبة</button>
+  </div>
+  <div class="card">
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>الكود</th><th>النوع</th><th>المشروع</th><th>مدير العمليات</th><th>الحد اليومي</th><th>الحد الشهري</th><th>الإجراءات</th></tr></thead>
+        <tbody id="vehiclesTbody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PAGE: REPORTS ══ -->
+<div class="page" id="pageReports">
+  <div class="page-header">
+    <div class="page-title"><h1>📅 التقارير والتحليلات</h1><p id="reportLabel">—</p></div>
+    <div style="display:flex;gap:.65rem;align-items:center;flex-wrap:wrap">
+      <input type="month" class="form-control" id="reportMonth" style="width:165px;padding:.42rem .75rem" oninput="renderReports()"/>
+      <button class="btn btn-primary btn-sm" onclick="exportExcel()">📥 Excel</button>
+    </div>
+  </div>
+
+  <!-- Tab Bar -->
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="switchRTab('rTab1',this)">📊 ملخص الشهر</button>
+    <button class="tab-btn" onclick="switchRTab('rTab2',this)">📈 مقارنة الأشهر</button>
+    <button class="tab-btn" onclick="switchRTab('rTab3',this)">🔮 توقع الشهر الجاي</button>
+    <button class="tab-btn" onclick="switchRTab('rTab4',this)">🚗 تاريخ السيارات</button>
+  </div>
+
+  <!-- Tab 1: ملخص الشهر -->
+  <div id="rTab1">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.25rem">
+      <div class="card"><div class="card-header"><div class="card-title">📊 استهلاك كل مشروع</div></div><div class="bar-chart" id="rProjectChart"></div></div>
+      <div class="card"><div class="card-header"><div class="card-title">🏪 توزيع المحطات</div></div><div class="bar-chart" id="rStationChart"></div></div>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-title">📋 ملخص كل مركبة</div></div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>المشروع</th><th>الكود</th><th>النوع</th><th>مدير العمليات</th><th>الكمية (لتر)</th><th>قبل الضريبة</th><th>الضريبة 15%</th><th>الإجمالي (ر.س)</th><th>الفواتير</th><th>الحد الشهري</th><th>النسبة</th><th>الكفاءة</th><th>الحالة</th></tr></thead>
+          <tbody id="reportTbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tab 2: مقارنة الأشهر -->
+  <div id="rTab2" style="display:none">
+    <div class="card">
+      <div class="card-header"><div class="card-title">📈 مقارنة الاستهلاك الشهري – آخر 12 شهر</div></div>
+      <div style="position:relative;height:300px"><canvas id="chartMonthly"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-title">💰 مقارنة المبالغ الشهرية – آخر 12 شهر</div></div>
+      <div style="position:relative;height:300px"><canvas id="chartMonthlyAmt"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-title">📋 جدول المقارنة الشهرية</div></div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>الشهر</th><th>الكميات (لتر)</th><th>قبل الضريبة</th><th>الضريبة 15%</th><th>الإجمالي</th><th>عدد الفواتير</th><th>التغيير %</th></tr></thead>
+          <tbody id="monthlyCompTbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tab 3: توقع الشهر الجاي -->
+  <div id="rTab3" style="display:none">
+    <div class="kpi-grid" id="forecastKPIs"></div>
+    <div class="g2">
+      <div class="card">
+        <div class="card-header"><div class="card-title">🔮 توقع الاستهلاك – الشهر الجاي</div></div>
+        <div style="position:relative;height:280px"><canvas id="chartForecast"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="card-title">📊 أساس التوقع</div></div>
+        <div id="forecastBasis"></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header"><div class="card-title">🚗 توقع لكل مركبة</div></div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>المشروع</th><th>الكود</th><th>النوع</th><th>متوسط الشهر</th><th>الشهر الجاي (متوقع)</th><th>الحد الشهري</th><th>التوقع %</th><th>الحالة المتوقعة</th></tr></thead>
+          <tbody id="forecastTbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tab 4: تاريخ السيارات -->
+  <div id="rTab4" style="display:none">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">🚗 اختر مركبة لعرض تاريخها الكامل</div>
+        <select class="form-control" style="width:250px" id="vehHistorySelect" onchange="renderVehHistory()">
+          <option value="">— اختر مركبة —</option>
+        </select>
+      </div>
+    </div>
+    <div id="vehHistoryContent"></div>
+  </div>
+</div>
+
+<!-- ══ PAGE: USERS ══ -->
+<div class="page" id="pageUsers">
+  <div class="page-header">
+    <div class="page-title"><h1>👥 إدارة المستخدمين</h1><p>إضافة وتعديل المستخدمين وكلمات السر</p></div>
+    <button class="btn btn-primary" onclick="openAddUser()">➕ إضافة مستخدم</button>
+  </div>
+  <div class="card">
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>اسم المستخدم</th><th>الاسم الكامل</th><th>المشروع</th><th>الدور</th><th>آخر دخول</th><th>الإجراءات</th></tr></thead>
+        <tbody id="usersTbody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PAGE: MY VEHICLES (employee) ══ -->
+<div class="page" id="pageMyVehicles">
+  <div class="page-header">
+    <div class="page-title"><h1>🚗 سيارات مشروعي</h1><p id="myVehProjectLabel">—</p></div>
+    <button class="btn btn-primary" onclick="openAddMyVehicle()">➕ إضافة سيارة</button>
+  </div>
+  <div class="card">
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>الكود</th><th>النوع</th><th>مدير العمليات</th><th>الحد اليومي (لتر)</th><th>الحد الشهري (لتر)</th><th>الإجراءات</th></tr></thead>
+        <tbody id="myVehiclesTbody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- MODALS -->
+<div class="modal-overlay" id="vehicleModal">
+  <div class="modal">
+    <div class="modal-header"><div class="modal-title" id="vModalTitle">إضافة مركبة</div><button class="modal-close" onclick="closeModal('vehicleModal')">✕</button></div>
+    <div class="form-grid">
+      <div class="form-group"><label class="form-label">رقم اللوحة <span>*</span></label><input class="form-control" id="mv_code" placeholder="أ ب ج 1234"/></div>
+      <div class="form-group"><label class="form-label">نوع المركبة / المعدة <span>*</span></label>
+        <input class="form-control" id="mv_type" placeholder="مثال: شيول، بوكات، مكنسة وسط..."/></div>
+      <div class="form-group"><label class="form-label">المشروع</label>
+        <select class="form-control" id="mv_project"></select></div>
+      <div class="form-group"><label class="form-label">مدير العمليات</label><input class="form-control" id="mv_driver" placeholder="اسم مدير العمليات"/></div>
+      <div class="form-group"><label class="form-label">نوع العداد</label>
+        <select class="form-control" id="mv_meter">
+          <option value="km">كيلومتر (كم)</option>
+          <option value="hours">ساعات تشغيل</option>
+        </select>
+      </div>
+      <div class="form-group"><label class="form-label">المعدل المعياري للكفاءة</label>
+        <input type="number" class="form-control" id="mv_std" placeholder="مثال: 28 لتر/100كم أو 2 لتر/ساعة" step="0.1"/></div>
+      <div class="form-group"><label class="form-label">الحد اليومي (لتر)</label><input type="number" class="form-control" id="mv_daily" value="120"/></div>
+      <div class="form-group"><label class="form-label">الحد الشهري (لتر)</label><input type="number" class="form-control" id="mv_monthly" value="2800"/></div>
+    </div>
+    <div style="margin-top:1.35rem;display:flex;gap:.9rem">
+      <button class="btn btn-primary" onclick="saveVehicle()">💾 حفظ</button>
+      <button class="btn btn-secondary" onclick="closeModal('vehicleModal')">إلغاء</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="userModal">
+  <div class="modal">
+    <div class="modal-header"><div class="modal-title" id="uModalTitle">إضافة مستخدم</div><button class="modal-close" onclick="closeModal('userModal')">✕</button></div>
+    <div id="uModalError"></div>
+    <div class="form-grid">
+      <div class="form-group"><label class="form-label">اسم المستخدم <span>*</span></label><input class="form-control" id="u_username" placeholder="ahmed123"/></div>
+      <div class="form-group"><label class="form-label">الاسم الكامل <span>*</span></label><input class="form-control" id="u_fullname" placeholder="أحمد محمد"/></div>
+      <div class="form-group"><label class="form-label">المشروع</label>
+        <select class="form-control" id="u_project"></select></div>
+      <div class="form-group"><label class="form-label">الدور</label>
+        <select class="form-control" id="u_role"><option value="employee">👷 موظف</option><option value="supervisor">👨‍💼 مشرف</option><option value="gm">👔 مدير عام</option></select></div>
+      <div class="form-group"><label class="form-label">كلمة السر <span id="pReq">*</span></label><input type="password" class="form-control" id="u_pass" placeholder="••••••••"/></div>
+      <div class="form-group"><label class="form-label">تأكيد كلمة السر <span id="pReq2">*</span></label><input type="password" class="form-control" id="u_pass2" placeholder="••••••••"/></div>
+    </div>
+    <p id="uPassHint" style="font-size:.78rem;color:var(--muted);margin-top:.65rem"></p>
+    <div style="margin-top:1.35rem;display:flex;gap:.9rem">
+      <button class="btn btn-primary" onclick="saveUser()">💾 حفظ</button>
+      <button class="btn btn-secondary" onclick="closeModal('userModal')">إلغاء</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════════════
+// DATA
+// ══════════════════════════════════════════════════════════════
+const PROJECTS = [
+  {id:'qoba',   name:'نظافة بلدية قباء',    color:'p1', hex:'#1a6b3c'},
+  {id:'awali',  name:'نظافة بلدية العوالي', color:'p2', hex:'#1a4a7a'},
+  {id:'aqiq',   name:'نظافة بلدية العقيق',  color:'p3', hex:'#6d2c8a'},
+  {id:'ohod',   name:'نظافة بلدية أحد',     color:'p4', hex:'#c0550a'},
+];
+const PROJECT_MAP = Object.fromEntries(PROJECTS.map(p=>[p.id,p]));
+
+// ── FIREBASE REALTIME DATABASE CONFIG ────────────────────────
+const FB_URL = 'https://fuel-governance-default-rtdb.firebaseio.com';
+
+async function fbGet(path) {
+  try {
+    const r = await fetch(`${FB_URL}/${path}.json`);
+    if (!r.ok) return null;
+    const data = await r.json();
+    if (!data) return [];
+    if (Array.isArray(data)) return data.filter(Boolean);
+    if (typeof data === 'object') return Object.values(data).filter(Boolean);
+    return [];
+  } catch { return null; }
+}
+async function fbSet(path, data) {
+  try {
+    const r = await fetch(`${FB_URL}/${path}.json`, {
+      method: 'PUT',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(data)
+    });
+    return r.ok;
+  } catch { return false; }
+}
+async function fbPush(path, data) {
+  try {
+    const r = await fetch(`${FB_URL}/${path}.json`, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(data)
+    });
+    return r.ok;
+  } catch { return false; }
+}
+
+// ── LOCAL FALLBACK DATA ──────────────────────────────────────
+const DEFAULT_VEHICLES = [
+  {id:'v001',code:'Q-001',type:'شاحنة نظافة',project:'qoba', driver:'سعد الغامدي',   meter:'km',   stdEff:28,daily:150,monthly:3500},
+  {id:'v002',code:'Q-002',type:'شاحنة نظافة',project:'qoba', driver:'فهد العتيبي',   meter:'km',   stdEff:28,daily:150,monthly:3500},
+  {id:'v003',code:'Q-003',type:'سيارة إشراف',project:'qoba', driver:'محمد القحطاني',meter:'km',   stdEff:12,daily:60, monthly:1400},
+  {id:'v004',code:'A-001',type:'شاحنة نظافة',project:'awali',driver:'عبدالله الزهراني',meter:'km',stdEff:28,daily:150,monthly:3500},
+  {id:'v005',code:'A-002',type:'بيك آب',      project:'awali',driver:'خالد الدوسري', meter:'km',   stdEff:14,daily:80, monthly:1900},
+  {id:'v006',code:'E-001',type:'شاحنة نظافة',project:'aqiq', driver:'عمر السلمي',    meter:'km',   stdEff:28,daily:150,monthly:3500},
+  {id:'v007',code:'E-002',type:'شاحنة نظافة',project:'aqiq', driver:'أحمد المالكي',  meter:'km',   stdEff:28,daily:150,monthly:3500},
+  {id:'v008',code:'E-003',type:'جرافة',       project:'aqiq', driver:'سلطان الشهري', meter:'hours',stdEff:18,daily:200,monthly:4800},
+  {id:'v009',code:'O-001',type:'شاحنة نظافة',project:'ohod', driver:'ناصر العمري',   meter:'km',   stdEff:28,daily:150,monthly:3500},
+  {id:'v010',code:'O-002',type:'سيارة إشراف',project:'ohod', driver:'ماجد الحربي',   meter:'km',   stdEff:12,daily:60, monthly:1400},
+];
+const DEFAULT_USERS = [
+  {id:'u001',username:'admin', fullname:'المدير العام',    project:'all',   role:'gm',      pass:'admin123',lastLogin:'—'},
+  {id:'u002',username:'qoba',  fullname:'موظف قباء',       project:'qoba',  role:'employee',pass:'1234',    lastLogin:'—'},
+  {id:'u003',username:'awali', fullname:'موظف العوالي',    project:'awali', role:'employee',pass:'1234',    lastLogin:'—'},
+  {id:'u004',username:'aqiq',  fullname:'موظف العقيق',     project:'aqiq',  role:'employee',pass:'1234',    lastLogin:'—'},
+  {id:'u005',username:'ohod',  fullname:'موظف أحد',        project:'ohod',  role:'employee',pass:'1234',    lastLogin:'—'},
+];
+
+let invoices = [];
+let vehicles = [];
+let users    = [];
+let currentUser = null;
+let editVIdx = -1, editUIdx = -1;
+let dbReady = false;
+
+// ── INIT DB ──────────────────────────────────────────────────
+function showDBStatus(msg, type) {
+  const el = document.getElementById('dbStatusBar');
+  if (!el) return;
+  const cls = type==='success'?'alert-success':type==='warn'?'alert-warn':'alert-info';
+  el.innerHTML = `<div class="alert ${cls}" style="margin:0;border-radius:0;justify-content:center;font-size:.8rem;text-align:center">${msg}</div>`;
+  if (type === 'success') setTimeout(() => el.innerHTML = '', 4000);
+}
+
+async function initDB() {
+  showDBStatus('جاري الاتصال بقاعدة البيانات...', 'info');
+  try {
+    const [dbInv, dbVeh, dbUsr] = await Promise.all([
+      fbGet('invoices'), fbGet('vehicles'), fbGet('users')
+    ]);
+    if (dbVeh !== null) {
+      invoices = dbInv && dbInv.length ? dbInv : [];
+      vehicles = dbVeh && dbVeh.length ? dbVeh : [];
+      users    = dbUsr && dbUsr.length ? dbUsr : DEFAULT_USERS;
+      // فقط المستخدمين لو فاضيين
+      if (!dbUsr || !dbUsr.length) await fbSet('users', DEFAULT_USERS);
+      dbReady = true;
+      save();
+      showDBStatus('☁️ متصل بالسحابة — البيانات مشتركة بين جميع الأجهزة', 'success');
+    } else {
+      throw new Error('Firebase not available');
+    }
+  } catch {
+    invoices = JSON.parse(localStorage.getItem('fuel_inv') || '[]');
+    vehicles = JSON.parse(localStorage.getItem('fuel_veh') || 'null') || DEFAULT_VEHICLES;
+    users    = JSON.parse(localStorage.getItem('fuel_usr') || 'null') || DEFAULT_USERS;
+    dbReady = false;
+    showDBStatus('⚠️ وضع محلي — البيانات على هذا الجهاز فقط', 'warn');
+  }
+}
+
+async function save() {
+  localStorage.setItem('fuel_inv', JSON.stringify(invoices));
+  localStorage.setItem('fuel_veh', JSON.stringify(vehicles));
+  localStorage.setItem('fuel_usr', JSON.stringify(users));
+}
+
+async function saveInvoice(inv) {
+  invoices.push(inv);
+  localStorage.setItem('fuel_inv', JSON.stringify(invoices));
+  if (dbReady) await fbSet('invoices', invoices);
+}
+
+async function saveVehicleDB(v) {
+  if (dbReady) await fbSet('vehicles', vehicles);
+  save();
+}
+
+async function saveUserDB(u) {
+  if (dbReady) await fbSet('users', users);
+  save();
+}
+
+async function deleteVehicleDB(id) {
+  if (dbReady) await fbSet('vehicles', vehicles);
+  save();
+}
+
+async function deleteUserDB(id) {
+  if (dbReady) await fbSet('users', users);
+  save();
+}
+
+async function reloadFromCloud() {
+  if (!dbReady) return;
+  const [dbInv, dbVeh, dbUsr] = await Promise.all([
+    fbGet('invoices'), fbGet('vehicles'), fbGet('users')
+  ]);
+  if (dbInv !== null) invoices = dbInv;
+  if (dbVeh !== null) vehicles = dbVeh;
+  if (dbUsr !== null) users    = dbUsr;
+  save();
+}
+
+// ══════════════════════════════════════════════════════════════
+// AUTH
+// ══════════════════════════════════════════════════════════════
+function togglePass(){const p=document.getElementById('loginPass');p.type=p.type==='password'?'text':'password'}
+function doLogin(){
+  const u=document.getElementById('loginUser').value.trim().toLowerCase();
+  const p=document.getElementById('loginPass').value;
+  const err=document.getElementById('loginError');
+  if(!u||!p){err.innerHTML=`<div class="alert alert-error">⚠️ أدخل اسم المستخدم وكلمة السر</div>`;return}
+  const user=users.find(x=>x.username.toLowerCase()===u&&x.pass===p);
+  if(!user){err.innerHTML=`<div class="alert alert-error">❌ بيانات الدخول غير صحيحة</div>`;document.getElementById('loginPass').value='';return}
+  user.lastLogin=new Date().toLocaleString('ar-SA'); save();
+  currentUser={...user};
+  err.innerHTML='';
+  document.getElementById('loginPage').style.display='none';
+  document.getElementById('mainNav').style.display='flex';
+  document.getElementById('navName').textContent=user.fullname;
+  document.getElementById('navAvatar').textContent=user.fullname[0];
+  const roleLabel = user.role==='gm'?'👔 مدير عام':user.role==='supervisor'?'👨‍💼 مشرف':'👷 موظف';
+  const proj = user.role==='gm'?'جميع المشاريع':user.role==='supervisor'?'مشرف – جميع المشاريع':(PROJECT_MAP[user.project]?.name||'—');
+  document.getElementById('navProject').textContent=`${roleLabel} – ${proj}`;
+  buildNav();
+  if(user.role==='gm') showPage('pageGM');
+  else showPage('pageEntry');
+}
+function logout(){
+  currentUser=null;
+  document.getElementById('loginPage').style.display='flex';
+  document.getElementById('mainNav').style.display='none';
+  document.getElementById('loginUser').value='';
+  document.getElementById('loginPass').value='';
+}
+
+// ══════════════════════════════════════════════════════════════
+// NAV
+// ══════════════════════════════════════════════════════════════
+function buildNav(){
+  let tabs;
+  if(currentUser.role==='gm'){
+    tabs=[['pageGM','🏆 المدير العام'],['pageVehicles','🚗 المركبات'],['pageReports','📅 التقارير'],['pageUsers','👥 المستخدمين']];
+  } else if(currentUser.role==='supervisor'){
+    tabs=[['pageEntry','⛽ إدخال فاتورة'],['pageVehicles','🚗 المركبات']];
+  } else {
+    tabs=[['pageEntry','⛽ إدخال فاتورة'],['pageProjectDash','📊 Dashboard'],['pageMyVehicles','🚗 سياراتي']];
+  }
+  document.getElementById('navTabs').innerHTML=tabs.map(([id,lbl])=>
+    `<button class="nav-tab" onclick="showPage('${id}')">${lbl}</button>`).join('');
+}
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.toggle('active',t.getAttribute('onclick').includes(id)));
+  if(id==='pageGM') renderGM();
+  if(id==='pageEntry'){populateVehicles();setToday();renderMyInvoices();}
+  if(id==='pageProjectDash') renderProjectDash();
+  if(id==='pageVehicles') renderVehiclesTable();
+  if(id==='pageMyVehicles') renderMyVehicles();
+  if(id==='pageReports') renderReports();
+  if(id==='pageUsers') renderUsersTable();
+}
+
+// ══════════════════════════════════════════════════════════════
+// HELPERS
+// ══════════════════════════════════════════════════════════════
+const today=()=>new Date().toISOString().split('T')[0];
+const thisMonth=()=>today().slice(0,7);
+function projColor(pid){return PROJECT_MAP[pid]?.hex||'#888'}
+function projName(pid){return pid==='all'?'كل المشاريع':(PROJECT_MAP[pid]?.name||pid)}
+function fmt(n){return Number(n||0).toLocaleString('en-US')}
+function fmtAmt(n){return Number(n||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})}
+function openModal(id){document.getElementById(id).classList.add('open')}
+function closeModal(id){document.getElementById(id).classList.remove('open')}
+document.querySelectorAll('.modal-overlay').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open')}));
+
+function statusBadge(pct){
+  if(pct>=100) return '<span class="badge badge-red">🔴 تجاوز</span>';
+  if(pct>=80)  return '<span class="badge badge-yellow">🟡 تحذير</span>';
+  if(pct>0)    return '<span class="badge badge-green">🟢 طبيعي</span>';
+  return '<span class="badge">⚪ لا استهلاك</span>';
+}
+
+// ══════════════════════════════════════════════════════════════
+// GM DASHBOARD
+// ══════════════════════════════════════════════════════════════
+function renderGM(){
+  const t=today(), m=thisMonth();
+  document.getElementById('gmDate').textContent='اليوم: '+new Date().toLocaleDateString('ar-SA',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  const todayInvs=invoices.filter(i=>i.date===t);
+  const monthInvs=invoices.filter(i=>i.date.startsWith(m));
+  document.getElementById('gmQtyToday').textContent=fmt(todayInvs.reduce((s,i)=>s+i.qty,0));
+  document.getElementById('gmAmtToday').textContent=fmtAmt(todayInvs.reduce((s,i)=>s+i.total,0));
+  document.getElementById('gmQtyMonth').textContent=fmt(monthInvs.reduce((s,i)=>s+i.qty,0));
+  document.getElementById('gmAmtMonth').textContent=fmtAmt(monthInvs.reduce((s,i)=>s+i.total,0));
+  let violations=0;
+  vehicles.forEach(v=>{
+    const used=monthInvs.filter(i=>i.vehicle===v.code).reduce((s,i)=>s+i.qty,0);
+    if(used>=v.monthly) violations++;
+  });
+  document.getElementById('gmViolations').textContent=violations;
+  document.getElementById('gmCount').textContent=monthInvs.length;
+
+  // Project cards
+  const pCards=document.getElementById('projectCards');
+  pCards.innerHTML=PROJECTS.map(p=>{
+    const pinvs=monthInvs.filter(i=>i.project===p.id);
+    const qty=pinvs.reduce((s,i)=>s+i.qty,0);
+    const amt=pinvs.reduce((s,i)=>s+i.total,0);
+    const pveh=vehicles.filter(v=>v.project===p.id);
+    return `<div class="project-card ${p.color}">
+      <div class="project-card-name" style="color:${p.hex}">🏗️ ${p.name}</div>
+      <div class="project-stat"><span>المركبات</span><span>${pveh.length} مركبة</span></div>
+      <div class="project-stat"><span>استهلاك الشهر</span><span>${fmt(qty)} لتر</span></div>
+      <div class="project-stat"><span>قبل الضريبة</span><span>${fmtAmt(pinvs.reduce((s,i)=>s+(i.subtotal||i.total),0))} ر.س</span></div>
+      <div class="project-stat"><span>الضريبة 15%</span><span style="color:var(--red)">${fmtAmt(pinvs.reduce((s,i)=>s+(i.vat||0),0))} ر.س</span></div>
+      <div class="project-stat"><span>الإجمالي شامل الضريبة</span><span style="font-weight:800">${fmtAmt(amt)} ر.س</span></div>
+      <div class="project-stat"><span>عدد الفواتير</span><span>${pinvs.length}</span></div>
+    </div>`;
+  }).join('');
+
+  // Compare chart
+  const maxQ=Math.max(...PROJECTS.map(p=>monthInvs.filter(i=>i.project===p.id).reduce((s,i)=>s+i.qty,0)),1);
+  document.getElementById('projectCompare').innerHTML=PROJECTS.map(p=>{
+    const qty=monthInvs.filter(i=>i.project===p.id).reduce((s,i)=>s+i.qty,0);
+    const pct=Math.round(qty/maxQ*100);
+    return `<div class="bar-item">
+      <div class="bar-label"><span>${p.name}</span><span>${fmt(qty)} لتر</span></div>
+      <div class="progress-wrap"><div class="progress-bar pb-green" style="width:${pct}%;background:${p.hex}"></div></div>
+    </div>`;
+  }).join('');
+
+  // Efficiency warnings KPI
+  let effWarnCount=0;
+  vehicles.forEach(v=>{
+    const eff=calcVehEff(v.code,monthInvs);
+    if(eff&&v.stdEff&&eff>v.stdEff*1.2) effWarnCount++;
+  });
+  const ewEl=document.getElementById('gmEffWarn');
+  if(ewEl) ewEl.textContent=effWarnCount;
+
+  // Alerts
+  const alertItems=[];
+  vehicles.forEach(v=>{
+    const usedM=monthInvs.filter(i=>i.vehicle===v.code).reduce((s,i)=>s+i.qty,0);
+    const usedD=todayInvs.filter(i=>i.vehicle===v.code).reduce((s,i)=>s+i.qty,0);
+    const eff=calcVehEff(v.code,monthInvs);
+    if(usedD>=v.daily) alertItems.push(`<div class="alert alert-error">🚨 ${v.code} – ${v.driver}: تجاوز الحد اليومي (${usedD}/${v.daily} لتر)</div>`);
+    else if(usedM/v.monthly>=0.8) alertItems.push(`<div class="alert alert-warn">⚠️ ${v.code}: ${Math.round(usedM/v.monthly*100)}% من الحد الشهري</div>`);
+    if(eff&&v.stdEff&&eff>v.stdEff*1.2) alertItems.push(`<div class="alert alert-warn">⚡ ${v.code}: كفاءة ضعيفة — ${fmtEff(eff,v.meter||'km')} | المعيار: ${fmtEff(v.stdEff,v.meter||'km')}</div>`);
+  });
+  const alertsEl=document.getElementById('alertsList');
+  if(alertsEl) alertsEl.innerHTML=alertItems.length?alertItems.join(''):`<div class="empty-state" style="padding:1.5rem"><div class="icon">✅</div><p>لا توجد تنبيهات</p></div>`;
+
+  // Populate project filter
+  const sel=document.getElementById('gmProjectFilter');
+  if(sel.options.length<=1){
+    PROJECTS.forEach(p=>sel.add(new Option(p.name,p.id)));
+  }
+  renderGMTable();
+}
+
+function renderGMTable(filter=''){
+  const pid=document.getElementById('gmProjectFilter')?.value||'';
+  let data=[...invoices].reverse();
+  if(pid) data=data.filter(i=>i.project===pid);
+  if(filter) data=data.filter(i=>Object.values(i).join(' ').toLowerCase().includes(filter.toLowerCase()));
+  const wrap=document.getElementById('gmInvoicesTable');
+  if(!data.length){wrap.innerHTML=`<div class="empty-state"><div class="icon">📭</div><p>لا توجد فواتير</p></div>`;return}
+  wrap.innerHTML=`<table><thead><tr>
+    <th>التاريخ</th><th>المشروع</th><th>المركبة</th><th>النوع</th><th>مدير العمليات</th>
+    <th>الكمية</th><th>قبل الضريبة</th><th>الضريبة 15%</th><th>الإجمالي</th><th>المحطة</th><th>الفاتورة</th><th>أدخله</th>
+  </tr></thead><tbody>${data.map(i=>`<tr>
+    <td>${i.date}</td>
+    <td><span class="badge" style="background:${projColor(i.project)}22;color:${projColor(i.project)}">${projName(i.project)}</span></td>
+    <td><strong>${i.vehicle}</strong></td><td>${i.type}</td><td>${i.driver}</td>
+    <td>${i.qty} لتر</td>
+    <td>${fmtAmt(i.subtotal||i.total)} ر.س</td>
+    <td style="color:var(--red)">${fmtAmt(i.vat||0)} ر.س</td>
+    <td style="font-weight:700">${fmtAmt(i.total)} ر.س</td>
+    <td>${i.station}</td><td>${i.invNo}</td><td><small>${i.enteredBy}</small></td>
+  </tr>`).join('')}</tbody></table>`;
+}
+function gmSearch(q){renderGMTable(q)}
+
+function exportAllCSV(){
+  const h=['التاريخ','المشروع','المركبة','النوع','مدير العمليات','الكمية','المبلغ','المحطة','الفاتورة','أدخله'];
+  const rows=invoices.map(i=>[i.date,projName(i.project),i.vehicle,i.type,i.driver,i.qty,i.total,i.station,i.invNo,i.enteredBy]);
+  const csv=[h,...rows].map(r=>r.join(',')).join('\n');
+  dl('\uFEFF'+csv,`فواتير_المحروقات_${today()}.csv`);
+}
+function dl(content,name){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([content],{type:'text/csv;charset=utf-8'}));a.download=name;a.click()}
+
+// ══════════════════════════════════════════════════════════════
+// EMPLOYEE ENTRY
+// ══════════════════════════════════════════════════════════════
+function setToday(){document.getElementById('fDate').value=today()}
+function populateVehicles(){
+  const pid=currentUser.project;
+  const isSup=currentUser.role==='supervisor';
+  const vList=vehicles.filter(v=>pid==='all'||isSup||v.project===pid);
+  document.getElementById('fVehicle').innerHTML='<option value="">— اختر المركبة —</option>'+
+    vList.map(v=>`<option value="${v.code}">${v.code} – ${v.type}${isSup?' ('+projName(v.project)+')':''}</option>`).join('');
+  document.getElementById('entryProjectLabel').textContent=isSup?'مشرف – جميع المشاريع':projName(pid);
+}
+function getLastMeter(vcode, beforeDate=null){
+  const prev=invoices.filter(i=>i.vehicle===vcode&&i.km&&(beforeDate?i.date<beforeDate:true))
+    .sort((a,b)=>b.date.localeCompare(a.date));
+  return prev.length?{val:prev[0].km,date:prev[0].date}:null;
+}
+function calcVehEff(vcode, data){
+  const v=vehicles.find(x=>x.code===vcode);if(!v)return null;
+  const vi=data.filter(i=>i.vehicle===vcode&&i.km);if(vi.length<2)return null;
+  const sorted=[...vi].sort((a,b)=>a.date.localeCompare(b.date));
+  const diff=+sorted[sorted.length-1].km-+sorted[0].km;
+  if(diff<=0)return null;
+  const qty=vi.reduce((s,i)=>s+i.qty,0);
+  return v.meter==='hours'?qty/diff:(qty/diff)*100;
+}
+function fmtEff(val,meter){return meter==='hours'?`${val.toFixed(2)} لتر/ساعة`:`${val.toFixed(2)} لتر/100كم`}
+function updateMeterLabel(){
+  const type = document.getElementById('fMeterType').value;
+  const lbl = document.getElementById('fMeterLabel');
+  lbl.innerHTML = type==='hours'
+    ? 'قراءة العداد (ساعات) <span>*</span>'
+    : 'قراءة العداد (كم) <span>*</span>';
+  document.getElementById('fKm').placeholder = type==='hours' ? '1250' : '125400';
+  calcAll();
+}
+function onVehicleChange(){
+  const code = document.getElementById('fVehicle').value;
+  const v = vehicles.find(x=>x.code===code);
+  document.getElementById('fType').value = v ? v.type : '';
+  if(v && v.meter){
+    document.getElementById('fMeterType').value = v.meter;
+    updateMeterLabel();
+  }
+  // Show last meter reading
+  if(v){
+    const lm=getLastMeter(code);
+    const lmEl=document.getElementById('fLastMeter');
+    if(lm){lmEl.value=`${fmtAmt(lm.val)} (${lm.date})`;lmEl.style.color='var(--accent)'}
+    else{lmEl.value='أول قراءة للمركبة';lmEl.style.color='var(--muted)'}
+    checkLimit(v);
+  } else {
+    document.getElementById('fLastMeter').value='';
+    document.getElementById('limitWarn').style.display='none';
+  }
+  calcAll();
+}
+function checkLimit(v){
+  const d=document.getElementById('fDate').value||today();
+  const m=d.slice(0,7);
+  const usedD=invoices.filter(i=>i.vehicle===v.code&&i.date===d).reduce((s,i)=>s+i.qty,0);
+  const usedM=invoices.filter(i=>i.vehicle===v.code&&i.date.startsWith(m)).reduce((s,i)=>s+i.qty,0);
+  const w=document.getElementById('limitWarn');
+  if(usedD>=v.daily){w.innerHTML=`<div class="alert alert-error">🚨 تجاوز الحد اليومي! (${usedD}/${v.daily} لتر)</div>`;w.style.display='block';}
+  else if(usedM/v.monthly>=0.8){w.innerHTML=`<div class="alert alert-warn">⚠️ ${Math.round(usedM/v.monthly*100)}% من الحد الشهري (${usedM}/${v.monthly} لتر)</div>`;w.style.display='block';}
+  else w.style.display='none';
+}
+const VAT = 0.15;
+function calcAll(){
+  const q=parseFloat(document.getElementById('fQty').value)||0;
+  const p=parseFloat(document.getElementById('fPrice').value)||0;
+  const km=parseFloat(document.getElementById('fKm').value)||0;
+  const code=document.getElementById('fVehicle').value;
+  const v=vehicles.find(x=>x.code===code);
+  const mType=document.getElementById('fMeterType').value;
+  // Financial
+  if(q&&p){
+    const subtotal=+(q*p).toFixed(2);
+    const vat=+(subtotal*VAT).toFixed(2);
+    const total=+(subtotal+vat).toFixed(2);
+    document.getElementById('fSubtotal').value=fmtAmt(subtotal)+' ر.س';
+    document.getElementById('fVat').value=fmtAmt(vat)+' ر.س';
+    document.getElementById('fTotal').value=fmtAmt(total)+' ر.س';
+  } else {
+    ['fSubtotal','fVat','fTotal'].forEach(id=>document.getElementById(id).value='');
+  }
+  // Efficiency
+  const effEl=document.getElementById('fEff');
+  const diffEl=document.getElementById('fMeterDiff');
+  const effWarn=document.getElementById('effWarn');
+  if(km&&q&&code){
+    const lm=getLastMeter(code, document.getElementById('fDate').value);
+    if(lm){
+      const diff=km-+lm.val;
+      if(diff>0){
+        diffEl.value=fmtAmt(diff)+' '+(mType==='hours'?'ساعة':'كم');
+        const eff=mType==='hours'?q/diff:(q/diff)*100;
+        effEl.value=fmtEff(eff,mType);
+        if(v?.stdEff){
+          if(eff>v.stdEff*1.2){
+            effEl.style.background='#fde8e6';effEl.style.color='var(--red)';effEl.style.fontWeight='700';
+            effWarn.innerHTML=`<div class="alert alert-warn">⚡ كفاءة ضعيفة! أعلى من المعيار بـ ${Math.round((eff/v.stdEff-1)*100)}% (معدلك: ${fmtEff(eff,mType)} / المعيار: ${fmtEff(v.stdEff,mType)})</div>`;
+            effWarn.style.display='block';
+          } else if(eff>v.stdEff*1.05){
+            effEl.style.background='#fef9e7';effEl.style.color='var(--yellow)';effEl.style.fontWeight='700';
+            effWarn.style.display='none';
+          } else {
+            effEl.style.background='#e8f5ee';effEl.style.color='var(--accent)';effEl.style.fontWeight='700';
+            effWarn.style.display='none';
+          }
+        }
+      } else if(diff<0){
+        diffEl.value='⚠️ القراءة أقل من السابقة!';
+        diffEl.style.color='var(--red)';
+      } else {
+        diffEl.value='—';
+      }
+    } else {
+      diffEl.value='أول قراءة للمركبة';
+      diffEl.style.color='var(--muted)';
+    }
+  } else {
+    if(effEl) effEl.value='';
+    if(diffEl) diffEl.value='';
+  }
+}
+function calcTotal(){ calcAll(); } // backward compat
+function submitInvoice(){
+  const date=document.getElementById('fDate').value;
+  const vehicle=document.getElementById('fVehicle').value;
+  const qty=parseFloat(document.getElementById('fQty').value);
+  const price=parseFloat(document.getElementById('fPrice').value);
+  const invNo=document.getElementById('fInvNo').value.trim();
+  const a=document.getElementById('entryAlertArea');
+
+  // ── تحقق من الحقول الإلزامية
+  if(!date||!vehicle||!qty||!price||!invNo){
+    a.innerHTML=`<div class="alert alert-error">⚠️ أكمل الحقول الإلزامية</div>`;
+    setTimeout(()=>a.innerHTML='',4000);return;
+  }
+
+  // ── تحقق 1: نفس رقم الفاتورة (رفض كامل)
+  const dupInvNo = invoices.find(i => i.invNo === invNo);
+  if(dupInvNo){
+    a.innerHTML=`<div class="alert alert-error">🚫 رقم الفاتورة <strong>${invNo}</strong> مسجل مسبقاً بتاريخ ${dupInvNo.date} — لا يمكن الحفظ</div>`;
+    setTimeout(()=>a.innerHTML='',6000);return;
+  }
+
+  // ── تحقق 2: نفس المركبة + نفس التاريخ + نفس الكمية (تحذير مع إمكانية المتابعة)
+  const dupEntry = invoices.find(i => i.vehicle===vehicle && i.date===date && i.qty===qty);
+  if(dupEntry){
+    // إظهار تحذير وطلب تأكيد
+    if(!confirm(`⚠️ تحذير تكرار!\n\nفاتورة مشابهة موجودة:\n• المركبة: ${vehicle}\n• التاريخ: ${date}\n• الكمية: ${qty} لتر\n• الفاتورة السابقة: ${dupEntry.invNo}\n\nهل أنت متأكد من الحفظ؟`)){
+      return;
+    }
+  }
+
+  const v=vehicles.find(x=>x.code===vehicle);
+  const subtotal=+(qty*price).toFixed(2);
+  const vat=+(subtotal*VAT).toFixed(2);
+  const total=+(subtotal+vat).toFixed(2);
+  const meterType = document.getElementById('fMeterType').value;
+  const meterVal  = document.getElementById('fKm').value;
+  invoices.push({
+    id:Date.now(),date,vehicle,type:v?.type||'',driver:v?.driver||'',
+    project:v?.project||currentUser.project,
+    qty,price,subtotal,vat,total,
+    meterType, km: meterVal||'',
+    invNo,notes:document.getElementById('fNotes').value,
+    enteredBy:currentUser.fullname,enteredAt:new Date().toLocaleString('ar-SA'),
+  });
+  save();
+  a.innerHTML=`<div class="alert alert-success">✅ تم حفظ الفاتورة ${invNo} | الإجمالي: ${fmtAmt(total)} ر.س (شامل ضريبة ${fmtAmt(vat)} ر.س)</div>`;
+  setTimeout(()=>a.innerHTML='',5000);
+  clearForm(); renderMyInvoices();
+}
+function clearForm(){
+  ['fVehicle','fType','fQty','fKm','fInvNo','fNotes','fSubtotal','fVat','fTotal','fEff','fMeterDiff','fLastMeter'].forEach(id=>{
+    const el=document.getElementById(id);if(el){el.value='';el.style.color='';el.style.background='';el.style.fontWeight=''}
+  });
+  document.getElementById('fPrice').value='0.62';
+  document.getElementById('fMeterType').value='km';
+  updateMeterLabel();
+  document.getElementById('limitWarn').style.display='none';
+  document.getElementById('effWarn').style.display='none';
+  setToday();
+}
+function renderMyInvoices(){
+  const t=today();
+  const mine=invoices.filter(i=>i.enteredBy===currentUser?.fullname&&i.date===t);
+  document.getElementById('todayCount').textContent=mine.length+' فاتورة';
+  const wrap=document.getElementById('myInvoicesWrap');
+  if(!mine.length){wrap.innerHTML=`<div class="empty-state"><div class="icon">📭</div><p>لم تُدخل فواتير اليوم</p></div>`;return}
+  wrap.innerHTML=`<div class="table-wrap"><table><thead><tr>
+    <th>الوقت</th><th>المركبة</th><th>الكمية</th><th>قبل الضريبة</th><th>الضريبة 15%</th><th>الإجمالي</th><th>الفاتورة</th>
+  </tr></thead>
+  <tbody>${mine.map(i=>`<tr>
+    <td><small>${i.enteredAt}</small></td><td><strong>${i.vehicle}</strong></td><td>${i.qty} لتر</td>
+    <td>${fmtAmt(i.subtotal||i.total)} ر.س</td>
+    <td style="color:var(--red)">${fmtAmt(i.vat||0)} ر.س</td>
+    <td style="font-weight:700;color:var(--orange)">${fmtAmt(i.total)} ر.س</td>
+    <td>${i.invNo}</td>
+  </tr>`).join('')}</tbody></table></div>`;
+}
+
+// ══════════════════════════════════════════════════════════════
+// PROJECT DASHBOARD (employee view)
+// ══════════════════════════════════════════════════════════════
+function renderProjectDash(){
+  const pid=currentUser.project;
+  const proj=PROJECT_MAP[pid];
+  const t=today(), m=thisMonth();
+  document.getElementById('projDashTitle').textContent=`📊 ${proj?.name||'Dashboard'}`;
+  document.getElementById('projDashSub').textContent='متابعة مشروعك';
+  const todayInvs=invoices.filter(i=>i.project===pid&&i.date===t);
+  const monthInvs=invoices.filter(i=>i.project===pid&&i.date.startsWith(m));
+  document.getElementById('pdQtyToday').textContent=fmt(todayInvs.reduce((s,i)=>s+i.qty,0));
+  document.getElementById('pdAmtToday').textContent=fmtAmt(todayInvs.reduce((s,i)=>s+i.total,0));
+  document.getElementById('pdQtyMonth').textContent=fmt(monthInvs.reduce((s,i)=>s+i.qty,0));
+  let viol=0;
+  const pveh=vehicles.filter(v=>v.project===pid);
+  pveh.forEach(v=>{const u=monthInvs.filter(i=>i.vehicle===v.code).reduce((s,i)=>s+i.qty,0);if(u>=v.monthly)viol++;});
+  document.getElementById('pdViolations').textContent=viol;
+
+  // Bars
+  document.getElementById('pdVehicleBars').innerHTML=pveh.map(v=>{
+    const used=monthInvs.filter(i=>i.vehicle===v.code).reduce((s,i)=>s+i.qty,0);
+    const pct=v.monthly>0?Math.min(Math.round(used/v.monthly*100),100):0;
+    const cls=pct>=100?'pb-red':pct>=80?'pb-yellow':'pb-green';
+    return `<div class="bar-item">
+      <div class="bar-label"><span>${v.code} – ${v.driver}</span><span>${used}/${v.monthly} لتر (${pct}%)</span></div>
+      <div class="progress-wrap"><div class="progress-bar ${cls}" style="width:${pct}%"></div></div>
+    </div>`;
+  }).join('');
+
+  // Alerts
+  const alerts=[];
+  pveh.forEach(v=>{
+    const usedD=todayInvs.filter(i=>i.vehicle===v.code).reduce((s,i)=>s+i.qty,0);
+    const usedM=monthInvs.filter(i=>i.vehicle===v.code).reduce((s,i)=>s+i.qty,0);
+    if(usedD>=v.daily) alerts.push(`<div class="alert alert-error">🚨 ${v.code}: تجاوز اليومي (${usedD}/${v.daily} لتر)</div>`);
+    else if(usedM/v.monthly>=0.8) alerts.push(`<div class="alert alert-warn">⚠️ ${v.code}: ${Math.round(usedM/v.monthly*100)}% من الشهري</div>`);
+  });
+  document.getElementById('pdAlerts').innerHTML=alerts.length?alerts.join(''):`<div class="empty-state" style="padding:1.5rem"><div class="icon">✅</div><p>لا توجد تنبيهات</p></div>`;
+  pdRenderTable(monthInvs);
+}
+function pdRenderTable(data){
+  const wrap=document.getElementById('pdInvoicesTable');
+  const d=[...data].reverse();
+  if(!d.length){wrap.innerHTML=`<div class="empty-state"><div class="icon">📭</div><p>لا توجد فواتير</p></div>`;return}
+  wrap.innerHTML=`<table><thead><tr><th>التاريخ</th><th>المركبة</th><th>النوع</th><th>مدير العمليات</th><th>الكمية</th><th>المبلغ</th><th>المحطة</th><th>الفاتورة</th></tr></thead>
+  <tbody>${d.map(i=>`<tr><td>${i.date}</td><td><strong>${i.vehicle}</strong></td><td>${i.type}</td><td>${i.driver}</td><td>${i.qty} لتر</td><td>${fmtAmt(i.total)} ر.س</td><td>${i.station}</td><td>${i.invNo}</td></tr>`).join('')}</tbody></table>`;
+}
+function pdSearch(q){
+  const pid=currentUser.project;
+  const m=thisMonth();
+  const data=invoices.filter(i=>i.project===pid&&i.date.startsWith(m));
+  pdRenderTable(q?data.filter(i=>Object.values(i).join(' ').toLowerCase().includes(q.toLowerCase())):data);
+}
+function exportProjectCSV(){
+  const pid=currentUser.project;
+  const m=thisMonth();
+  const data=invoices.filter(i=>i.project===pid&&i.date.startsWith(m));
+  const h=['التاريخ','المركبة','النوع','مدير العمليات','الكمية','المبلغ','المحطة','الفاتورة'];
+  const rows=data.map(i=>[i.date,i.vehicle,i.type,i.driver,i.qty,i.total,i.station,i.invNo]);
+  dl('\uFEFF'+[h,...rows].map(r=>r.join(',')).join('\n'),`${projName(pid)}_${m}.csv`);
+}
+
+// ══════════════════════════════════════════════════════════════
+// VEHICLES MANAGEMENT
+// ══════════════════════════════════════════════════════════════
+function renderVehiclesTable(){
+  const isSup=currentUser.role==='supervisor';
+  const pid=(currentUser.role==='gm'||isSup)?null:currentUser.project;
+  const list=pid?vehicles.filter(v=>v.project===pid):vehicles;
+  document.getElementById('vehiclesProjectLabel').textContent=pid?projName(pid):'جميع المشاريع';
+  document.getElementById('vehiclesTbody').innerHTML=list.map((v,i)=>{
+    const idx=vehicles.indexOf(v);
+    return `<tr>
+      <td><strong>${v.code}</strong></td><td>${v.type}</td>
+      <td><span class="badge" style="background:${projColor(v.project)}22;color:${projColor(v.project)}">${projName(v.project)}</span></td>
+      <td>${v.driver}</td><td>${v.daily} لتر</td><td>${v.monthly} لتر</td>
+      <td style="display:flex;gap:.4rem">
+        <button class="btn btn-secondary btn-sm" onclick="editVehicle(${idx})">✏️</button>
+        <button class="btn btn-sm" style="background:#fde8e6;color:var(--red)" onclick="deleteVehicle(${idx})">🗑️</button>
+      </td></tr>`;
+  }).join('');
+}
+function openAddVehicle(){
+  editVIdx=-1;
+  document.getElementById('vModalTitle').textContent='➕ إضافة مركبة';
+  ['mv_code','mv_driver'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('mv_daily').value=120;
+  document.getElementById('mv_monthly').value=2800;
+  populateProjectSelect('mv_project');
+  openModal('vehicleModal');
+}
+function editVehicle(idx){
+  editVIdx=idx; const v=vehicles[idx];
+  document.getElementById('vModalTitle').textContent='✏️ تعديل مركبة';
+  document.getElementById('mv_code').value=v.code;
+  document.getElementById('mv_type').value=v.type;
+  document.getElementById('mv_driver').value=v.driver;
+  document.getElementById('mv_daily').value=v.daily;
+  document.getElementById('mv_monthly').value=v.monthly;
+  document.getElementById('mv_meter').value=v.meter||'km';
+  document.getElementById('mv_std').value=v.stdEff||'';
+  populateProjectSelect('mv_project',v.project);
+  openModal('vehicleModal');
+}
+function saveVehicle(){
+  const v={code:document.getElementById('mv_code').value.trim(),type:document.getElementById('mv_type').value,project:document.getElementById('mv_project').value,driver:document.getElementById('mv_driver').value.trim(),daily:+document.getElementById('mv_daily').value,monthly:+document.getElementById('mv_monthly').value};
+  if(!v.code){alert('أدخل كود المركبة');return}
+  if(editVIdx>=0) vehicles[editVIdx]=v; else vehicles.push(v);
+  save(); closeModal('vehicleModal'); renderVehiclesTable();
+}
+function deleteVehicle(idx){if(!confirm('حذف المركبة؟'))return;vehicles.splice(idx,1);save();renderVehiclesTable()}
+
+// ══════════════════════════════════════════════════════════════
+// REPORTS
+// ══════════════════════════════════════════════════════════════
+function switchRTab(id,btn){
+  ['rTab1','rTab2','rTab3','rTab4'].forEach(t=>{const el=document.getElementById(t);if(el)el.style.display=t===id?'block':'none'});
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  if(id==='rTab2')renderMonthlyComparison();
+  if(id==='rTab3')renderForecast();
+  if(id==='rTab4')populateVehHistorySelect();
+}
+
+function renderMonthlyComparison(){
+  const months=[];
+  for(let i=11;i>=0;i--){const d=new Date();d.setDate(1);d.setMonth(d.getMonth()-i);months.push(d.toISOString().slice(0,7))}
+  const mn=['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+  const labels=months.map(m=>{const[y,mo]=m.split('-');return mn[+mo-1]+' '+y.slice(2)});
+  const qtyData=months.map(m=>invoices.filter(i=>i.date.startsWith(m)).reduce((s,i)=>s+i.qty,0));
+  const amtData=months.map(m=>invoices.filter(i=>i.date.startsWith(m)).reduce((s,i)=>s+i.total,0));
+  if(window._ch1)window._ch1.destroy();
+  window._ch1=new Chart(document.getElementById('chartMonthly'),{type:'bar',data:{labels,datasets:PROJECTS.map(p=>({label:p.name.replace('نظافة بلدية ',''),data:months.map(m=>invoices.filter(i=>i.date.startsWith(m)&&(i.project||i.proj)===p.id).reduce((s,i)=>s+i.qty,0)),backgroundColor:p.hex+'cc',borderRadius:4}))},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:10},boxWidth:12}}},scales:{x:{stacked:true},y:{stacked:true,beginAtZero:true}}}});
+  if(window._ch2)window._ch2.destroy();
+  window._ch2=new Chart(document.getElementById('chartMonthlyAmt'),{type:'line',data:{labels,datasets:[{label:'الإجمالي (ر.س)',data:amtData.map(v=>+v.toFixed(2)),borderColor:'#1a6b3c',backgroundColor:'#1a6b3c22',tension:.35,fill:true,pointRadius:4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true}}}});
+  let prevQty=null;
+  document.getElementById('monthlyCompTbody').innerHTML=months.map((m,idx)=>{
+    const qty=qtyData[idx];const amt=amtData[idx];
+    const vat=invoices.filter(i=>i.date.startsWith(m)).reduce((s,i)=>s+(i.vat||0),0);
+    const sub=invoices.filter(i=>i.date.startsWith(m)).reduce((s,i)=>s+(i.subtotal||i.total),0);
+    const cnt=invoices.filter(i=>i.date.startsWith(m)).length;
+    const change=prevQty&&prevQty>0?Math.round((qty-prevQty)/prevQty*100):null;
+    const ch=change!==null?`<span style="color:${change>0?'var(--red)':change<0?'var(--accent)':'var(--muted)'};font-weight:700">${change>0?'↑':'↓'}${Math.abs(change)}%</span>`:'—';
+    prevQty=qty;
+    const[y,mo]=m.split('-');
+    return`<tr><td><strong>${mn[+mo-1]} ${y}</strong></td><td>${fmt(qty)} لتر</td><td>${fmtAmt(sub)} ر.س</td><td style="color:var(--red)">${fmtAmt(vat)} ر.س</td><td style="font-weight:700">${fmtAmt(amt)} ر.س</td><td>${cnt}</td><td>${ch}</td></tr>`;
+  }).join('');
+}
+
+function renderForecast(){
+  const months=[];
+  for(let i=3;i>=1;i--){const d=new Date();d.setDate(1);d.setMonth(d.getMonth()-i);months.push(d.toISOString().slice(0,7))}
+  const nd=new Date();nd.setMonth(nd.getMonth()+1);
+  const nextMonth=nd.toISOString().slice(0,7);
+  const mn=['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+  const[ny,nm]=nextMonth.split('-');
+  const nextLabel=mn[+nm-1]+' '+ny;
+  const avgQty=months.reduce((s,m)=>s+invoices.filter(i=>i.date.startsWith(m)).reduce((a,i)=>a+i.qty,0),0)/3;
+  const avgAmt=months.reduce((s,m)=>s+invoices.filter(i=>i.date.startsWith(m)).reduce((a,i)=>a+i.total,0),0)/3;
+  const avgVat=avgAmt*(VAT/(1+VAT));
+  document.getElementById('forecastKPIs').innerHTML=`
+    <div class="kpi-card"><div class="kpi-label">استهلاك متوقع</div><div class="kpi-value">${fmt(Math.round(avgQty))}</div><div class="kpi-sub">لتر – ${nextLabel}</div><div class="kpi-icon">🔮</div></div>
+    <div class="kpi-card blue"><div class="kpi-label">مبلغ متوقع</div><div class="kpi-value">${fmtAmt(avgAmt)}</div><div class="kpi-sub">ر.س شامل الضريبة</div><div class="kpi-icon">💰</div></div>
+    <div class="kpi-card yellow"><div class="kpi-label">ضريبة متوقعة</div><div class="kpi-value">${fmtAmt(avgVat)}</div><div class="kpi-sub">ر.س</div><div class="kpi-icon">📊</div></div>
+    <div class="kpi-card"><div class="kpi-label">أساس التوقع</div><div class="kpi-value">3</div><div class="kpi-sub">أشهر سابقة</div><div class="kpi-icon">📅</div></div>`;
+  const chartLabels=[...months.map(m=>{const[y,mo]=m.split('-');return mn[+mo-1]+' '+y.slice(2)}),nextLabel+' (متوقع)'];
+  const chartData=[...months.map(m=>invoices.filter(i=>i.date.startsWith(m)).reduce((s,i)=>s+i.qty,0)),Math.round(avgQty)];
+  if(window._ch3)window._ch3.destroy();
+  window._ch3=new Chart(document.getElementById('chartForecast'),{type:'bar',data:{labels:chartLabels,datasets:[{data:chartData,backgroundColor:[...months.map(()=>'#1a6b3ccc'),'#f7a325cc'],borderRadius:6}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true}}}});
+  document.getElementById('forecastBasis').innerHTML=`<div class="bar-chart">${months.map(m=>{
+    const qty=invoices.filter(i=>i.date.startsWith(m)).reduce((s,i)=>s+i.qty,0);
+    const[y,mo]=m.split('-');
+    return`<div class="bar-item"><div class="bar-label"><span>${mn[+mo-1]} ${y}</span><span>${fmt(qty)} لتر</span></div><div class="progress-wrap"><div class="progress-bar pb-green" style="width:${avgQty>0?Math.round(qty/avgQty*100):0}%"></div></div></div>`;
+  }).join('')}<div style="margin-top:1rem;padding:.75rem;background:#e8f5ee;border-radius:8px;font-size:.85rem"><strong>المتوسط:</strong> ${fmt(Math.round(avgQty))} لتر/شهر</div></div>`;
+  document.getElementById('forecastTbody').innerHTML=vehicles.map(v=>{
+    const avgV=months.reduce((s,m)=>s+invoices.filter(i=>i.vehicle===v.code&&i.date.startsWith(m)).reduce((a,i)=>a+i.qty,0),0)/3;
+    const pct=v.monthly>0?Math.round(avgV/v.monthly*100):0;
+    return`<tr><td><span class="badge" style="background:${projColor(v.project)}22;color:${projColor(v.project)}">${projName(v.project)}</span></td><td><strong>${v.code}</strong></td><td>${v.type}</td><td>${fmt(Math.round(avgV))} لتر</td><td style="font-weight:700;color:var(--orange)">${fmt(Math.round(avgV))} لتر</td><td>${fmt(v.monthly)} لتر</td><td>${pct}%</td><td>${statusBadge(pct)}</td></tr>`;
+  }).join('');
+}
+
+function populateVehHistorySelect(){
+  const sel=document.getElementById('vehHistorySelect');
+  if(sel.options.length<=1) vehicles.forEach(v=>sel.add(new Option(`${v.code} – ${v.type} (${projName(v.project)})`,v.code)));
+}
+function renderVehHistory(){
+  const code=document.getElementById('vehHistorySelect').value;
+  const wrap=document.getElementById('vehHistoryContent');
+  if(!code){wrap.innerHTML='';return}
+  const v=vehicles.find(x=>x.code===code);
+  const vInvs=[...invoices.filter(i=>i.vehicle===code)].sort((a,b)=>a.date.localeCompare(b.date));
+  if(!vInvs.length){wrap.innerHTML=`<div class="card"><div class="empty-state"><div class="icon">📭</div><p>لا توجد فواتير لهذه المركبة</p></div></div>`;return}
+  const totalQty=vInvs.reduce((s,i)=>s+i.qty,0);
+  const totalAmt=vInvs.reduce((s,i)=>s+i.total,0);
+  const months=[...new Set(vInvs.map(i=>i.date.slice(0,7)))].sort();
+  const mn=['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+  wrap.innerHTML=`
+    <div class="kpi-grid">
+      <div class="kpi-card"><div class="kpi-label">إجمالي الاستهلاك</div><div class="kpi-value">${fmt(totalQty)}</div><div class="kpi-sub">لتر منذ البداية</div><div class="kpi-icon">⛽</div></div>
+      <div class="kpi-card blue"><div class="kpi-label">إجمالي المبلغ</div><div class="kpi-value">${fmtAmt(totalAmt)}</div><div class="kpi-sub">ر.س شامل الضريبة</div><div class="kpi-icon">💰</div></div>
+      <div class="kpi-card"><div class="kpi-label">عدد الفواتير</div><div class="kpi-value">${vInvs.length}</div><div class="kpi-sub">منذ البداية</div><div class="kpi-icon">🧾</div></div>
+      <div class="kpi-card yellow"><div class="kpi-label">متوسط شهري</div><div class="kpi-value">${fmt(Math.round(totalQty/months.length))}</div><div class="kpi-sub">لتر/شهر</div><div class="kpi-icon">📅</div></div>
+    </div>
+    <div class="card"><div class="card-header"><div class="card-title">📊 الاستهلاك الشهري – ${v?.code} (${v?.type})</div></div><div style="position:relative;height:250px"><canvas id="vehHistChart"></canvas></div></div>
+    <div class="card"><div class="card-header"><div class="card-title">📋 كل الفواتير (${vInvs.length})</div></div>
+    <div class="table-wrap"><table><thead><tr><th>#</th><th>التاريخ</th><th>الكمية</th><th>قبل الضريبة</th><th>الضريبة</th><th>الإجمالي</th><th>العداد</th><th>الكفاءة</th><th>الفاتورة</th><th>أدخله</th></tr></thead>
+    <tbody>${vInvs.map((i,idx)=>{
+      const prev=vInvs[idx-1];const diff=prev&&i.km&&prev.km?+i.km-+prev.km:null;
+      const eff=diff&&diff>0?(v?.meter==='hours'?i.qty/diff:(i.qty/diff)*100):null;
+      return`<tr><td>${idx+1}</td><td>${i.date}</td><td>${i.qty} لتر</td><td>${fmtAmt(i.subtotal||i.total)} ر.س</td><td style="color:var(--red)">${fmtAmt(i.vat||0)} ر.س</td><td style="font-weight:700">${fmtAmt(i.total)} ر.س</td><td>${i.km?fmt(i.km)+' '+(i.meterType==='hours'?'س':'كم'):'—'}</td><td>${eff?`<span class="badge ${eff>(v?.stdEff||999)*1.2?'badge-red':'badge-green'}">${fmtEff(eff,v?.meter||'km')}</span>`:'—'}</td><td><small>${i.invNo}</small></td><td><small>${i.enteredBy}</small></td></tr>`;
+    }).join('')}</tbody>
+    <tfoot><tr><td colspan="2"><strong>الإجمالي</strong></td><td>${fmt(totalQty)} لتر</td><td>${fmtAmt(vInvs.reduce((s,i)=>s+(i.subtotal||i.total),0))} ر.س</td><td>${fmtAmt(vInvs.reduce((s,i)=>s+(i.vat||0),0))} ر.س</td><td>${fmtAmt(totalAmt)} ر.س</td><td colspan="4"></td></tr></tfoot>
+    </table></div></div>`;
+  setTimeout(()=>{
+    if(window._ch4)window._ch4.destroy();
+    window._ch4=new Chart(document.getElementById('vehHistChart'),{type:'bar',data:{labels:months.map(m=>{const[y,mo]=m.split('-');return mn[+mo-1]+' '+y.slice(2)}),datasets:[{data:months.map(m=>vInvs.filter(i=>i.date.startsWith(m)).reduce((s,i)=>s+i.qty,0)),backgroundColor:'#1a6b3ccc',borderRadius:5}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true}}}});
+  },100);
+}
+
+function renderReports(){
+  const el=document.getElementById('reportMonth');
+  const m=el.value||thisMonth(); if(!el.value) el.value=m;
+  const [y,mo]=m.split('-');
+  const mNames=['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+  document.getElementById('reportLabel').textContent=`تقرير شهر ${mNames[+mo-1]} ${y}`;
+  const filtered=invoices.filter(i=>i.date.startsWith(m));
+
+  // Project bars
+  const maxP=Math.max(...PROJECTS.map(p=>filtered.filter(i=>i.project===p.id).reduce((s,i)=>s+i.qty,0)),1);
+  document.getElementById('rProjectChart').innerHTML=PROJECTS.map(p=>{
+    const qty=filtered.filter(i=>i.project===p.id).reduce((s,i)=>s+i.qty,0);
+    return `<div class="bar-item"><div class="bar-label"><span>${p.name}</span><span>${fmt(qty)} لتر</span></div>
+    <div class="progress-wrap"><div class="progress-bar pb-green" style="width:${Math.round(qty/maxP*100)}%;background:${p.hex}"></div></div></div>`;
+  }).join('')||'<div class="empty-state"><p>لا توجد بيانات</p></div>';
+
+  // Station bars
+  const sts=[...new Set(filtered.map(i=>i.station))];
+  const stTotals=sts.map(s=>({name:s,qty:filtered.filter(i=>i.station===s).reduce((x,i)=>x+i.qty,0)})).sort((a,b)=>b.qty-a.qty);
+  const maxS=Math.max(...stTotals.map(x=>x.qty),1);
+  document.getElementById('rStationChart').innerHTML=stTotals.length?stTotals.map(s=>`<div class="bar-item">
+    <div class="bar-label"><span>${s.name}</span><span>${fmt(s.qty)} لتر</span></div>
+    <div class="progress-wrap"><div class="progress-bar pb-green" style="width:${Math.round(s.qty/maxS*100)}%;background:var(--blue)"></div></div>
+  </div>`).join(''):'<div class="empty-state"><p>لا توجد بيانات</p></div>';
+
+  // Vehicle table
+  const totalQty=filtered.reduce((s,i)=>s+i.qty,0);
+  const totalAmt=filtered.reduce((s,i)=>s+i.total,0);
+  document.getElementById('reportTbody').innerHTML=[
+    ...vehicles.map(v=>{
+      const invs=filtered.filter(i=>i.vehicle===v.code);
+      const qty=invs.reduce((s,i)=>s+i.qty,0);
+      const subtotal=invs.reduce((s,i)=>s+(i.subtotal||i.total),0);
+      const vat=invs.reduce((s,i)=>s+(i.vat||0),0);
+      const amt=invs.reduce((s,i)=>s+i.total,0);
+      const pct=v.monthly>0?Math.round(qty/v.monthly*100):0;
+      const eff=calcVehEff(v.code,filtered);
+      return `<tr>
+        <td><span class="badge" style="background:${projColor(v.project)}22;color:${projColor(v.project)}">${projName(v.project)}</span></td>
+        <td><strong>${v.code}</strong></td><td>${v.type}</td><td>${v.driver}</td>
+        <td>${fmt(qty)} لتر</td>
+        <td>${fmtAmt(subtotal)} ر.س</td>
+        <td style="color:var(--red)">${fmtAmt(vat)} ر.س</td>
+        <td style="font-weight:700">${fmtAmt(amt)} ر.س</td>
+        <td>${invs.length}</td>
+        <td>${fmt(v.monthly)} لتر</td>
+        <td><div style="display:flex;align-items:center;gap:.4rem"><div class="progress-wrap" style="width:55px"><div class="progress-bar ${pct>=100?'pb-red':pct>=80?'pb-yellow':'pb-green'}" style="width:${Math.min(pct,100)}%"></div></div><span>${pct}%</span></div></td>
+        <td>${eff?`<span class="badge ${eff>(v.stdEff||999)*1.2?'badge-red':eff>(v.stdEff||999)*1.05?'badge-yellow':'badge-green'}">${fmtEff(eff,v.meter||'km')}</span>`:'—'}</td>
+        <td>${statusBadge(pct)}</td>
+      </tr>`;
+    }),
+    `<tr style="background:var(--ink);color:#fff;font-weight:700">
+      <td colspan="4" style="text-align:center;color:#fff">📊 الإجمالي الكلي</td>
+      <td style="color:#ffd700">${fmt(filtered.reduce((s,i)=>s+i.qty,0))} لتر</td>
+      <td style="color:#ffd700">${fmtAmt(filtered.reduce((s,i)=>s+(i.subtotal||i.total),0))} ر.س</td>
+      <td style="color:#ff9999">${fmtAmt(filtered.reduce((s,i)=>s+(i.vat||0),0))} ر.س</td>
+      <td style="color:#ffd700">${fmtAmt(filtered.reduce((s,i)=>s+i.total,0))} ر.س</td>
+      <td style="color:#fff">${filtered.length}</td><td colspan="3"></td>
+    </tr>`
+  ].join('');
+}
+function exportReportCSV(){ exportExcel(); } // keep old name working
+
+function exportExcel(){
+  const m = document.getElementById('reportMonth').value || thisMonth();
+  const [y, mo] = m.split('-');
+  const mNames = ['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+  const monthLabel = `${mNames[+mo-1]} ${y}`;
+  const filtered = invoices.filter(i => i.date.startsWith(m));
+
+  // Load SheetJS dynamically then build workbook
+  if(typeof XLSX === 'undefined'){
+    const s = document.createElement('script');
+    s.src = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
+    s.onload = () => _buildExcel(filtered, m, monthLabel);
+    document.head.appendChild(s);
+  } else {
+    _buildExcel(filtered, m, monthLabel);
+  }
+}
+
+function _buildExcel(filtered, m, monthLabel){
+  const wb = XLSX.utils.book_new();
+  const totalQty   = filtered.reduce((s,i)=>s+i.qty,0);
+  const totalSub   = filtered.reduce((s,i)=>s+(i.subtotal||i.total),0);
+  const totalVat   = filtered.reduce((s,i)=>s+(i.vat||0),0);
+  const totalAmt   = filtered.reduce((s,i)=>s+i.total,0);
+
+  // ── 1. ملخص عام ──────────────────────────────────────────
+  const summaryData = [
+    ['تقرير المحروقات الشهري – ' + monthLabel],
+    [],
+    ['البيان', 'القيمة'],
+    ['إجمالي الفواتير', filtered.length],
+    ['إجمالي الكميات (لتر)', totalQty],
+    ['إجمالي المبلغ قبل الضريبة (ر.س)', +totalSub.toFixed(2)],
+    ['ضريبة القيمة المضافة 15% (ر.س)', +totalVat.toFixed(2)],
+    ['الإجمالي شامل الضريبة (ر.س)', +totalAmt.toFixed(2)],
+    [],
+    ['المشروع', 'الفواتير', 'الكميات (لتر)', 'قبل الضريبة', 'الضريبة 15%', 'الإجمالي'],
+    ...PROJECTS.map(p => {
+      const pi = filtered.filter(i=>i.project===p.id);
+      return [
+        p.name,
+        pi.length,
+        pi.reduce((s,i)=>s+i.qty,0),
+        +pi.reduce((s,i)=>s+(i.subtotal||i.total),0).toFixed(2),
+        +pi.reduce((s,i)=>s+(i.vat||0),0).toFixed(2),
+        +pi.reduce((s,i)=>s+i.total,0).toFixed(2),
+      ];
+    }),
+  ];
+  const wsSummary = XLSX.utils.aoa_to_sheet(summaryData);
+  wsSummary['!cols'] = [{wch:35},{wch:15},{wch:18},{wch:20},{wch:18},{wch:20}];
+  XLSX.utils.book_append_sheet(wb, wsSummary, 'ملخص عام');
+
+  // ── 2. ملخص المشاريع ─────────────────────────────────────
+  const projRows = [
+    ['ملخص المشاريع – ' + monthLabel],
+    [],
+    ['المشروع','عدد المركبات','الفواتير','الكميات (لتر)','قبل الضريبة (ر.س)','الضريبة 15%','الإجمالي (ر.س)'],
+    ...PROJECTS.map(p => {
+      const pi = filtered.filter(i=>i.project===p.id);
+      return [
+        p.name,
+        vehicles.filter(v=>v.project===p.id).length,
+        pi.length,
+        pi.reduce((s,i)=>s+i.qty,0),
+        +pi.reduce((s,i)=>s+(i.subtotal||i.total),0).toFixed(2),
+        +pi.reduce((s,i)=>s+(i.vat||0),0).toFixed(2),
+        +pi.reduce((s,i)=>s+i.total,0).toFixed(2),
+      ];
+    }),
+    ['الإجمالي','',filtered.length,totalQty,+totalSub.toFixed(2),+totalVat.toFixed(2),+totalAmt.toFixed(2)],
+  ];
+  const wsProj = XLSX.utils.aoa_to_sheet(projRows);
+  wsProj['!cols'] = [{wch:30},{wch:16},{wch:12},{wch:16},{wch:20},{wch:16},{wch:18}];
+  XLSX.utils.book_append_sheet(wb, wsProj, 'ملخص المشاريع');
+
+  // ── 3. ملخص السيارات ─────────────────────────────────────
+  const vehRows = [
+    ['ملخص السيارات – ' + monthLabel],
+    [],
+    ['المشروع','رقم اللوحة','نوع المعدة','الفواتير','الكميات (لتر)','قبل الضريبة','الضريبة 15%','الإجمالي','الحد الشهري','نسبة الاستهلاك','الحالة'],
+    ...vehicles.map(v => {
+      const vi = filtered.filter(i=>i.vehicle===v.code);
+      const qty = vi.reduce((s,i)=>s+i.qty,0);
+      const sub = +vi.reduce((s,i)=>s+(i.subtotal||i.total),0).toFixed(2);
+      const vat = +vi.reduce((s,i)=>s+(i.vat||0),0).toFixed(2);
+      const tot = +vi.reduce((s,i)=>s+i.total,0).toFixed(2);
+      const pct = v.monthly>0?Math.round(qty/v.monthly*100):0;
+      const status = pct>=100?'تجاوز':pct>=80?'تحذير':qty>0?'طبيعي':'لا استهلاك';
+      return [projName(v.project),v.code,v.type,vi.length,qty,sub,vat,tot,v.monthly,pct+'%',status];
+    }),
+    ['الإجمالي','','',filtered.length,totalQty,+totalSub.toFixed(2),+totalVat.toFixed(2),+totalAmt.toFixed(2),'','',''],
+  ];
+  const wsVeh = XLSX.utils.aoa_to_sheet(vehRows);
+  wsVeh['!cols'] = [{wch:28},{wch:14},{wch:18},{wch:10},{wch:14},{wch:16},{wch:14},{wch:16},{wch:14},{wch:14},{wch:12}];
+  XLSX.utils.book_append_sheet(wb, wsVeh, 'ملخص السيارات');
+
+  // ── 4. شيت لكل مشروع (فواتير تفصيلية للإدارة المالية) ──────
+  PROJECTS.forEach(p => {
+    const pi = filtered.filter(i=>i.project===p.id);
+    const pRows = [
+      [p.name + ' – كشف فواتير المحروقات – ' + monthLabel],
+      ['التاريخ: ' + new Date().toLocaleDateString('ar-SA'), '', '', '', '', '', '', '', '', '', ''],
+      [],
+      ['م','رقم الفاتورة','التاريخ','رقم اللوحة','نوع المعدة','الكمية (لتر)','سعر اللتر','قبل الضريبة (ر.س)','الضريبة 15% (ر.س)','الإجمالي (ر.س)','قراءة العداد','نوع العداد','ملاحظات'],
+      ...pi.map((i,idx)=>{
+        return [
+          idx+1,
+          i.invNo,
+          i.date,
+          i.vehicle,
+          i.type,
+          i.qty,
+          i.price,
+          +(i.subtotal||i.total).toFixed(2),
+          +(i.vat||0).toFixed(2),
+          +i.total.toFixed(2),
+          i.km||'—',
+          i.meterType==='hours'?'ساعات تشغيل':'كيلومتر',
+          i.notes||'',
+        ];
+      }),
+      [],
+      ['','الإجمالي','','','',
+        pi.reduce((s,i)=>s+i.qty,0),
+        '',
+        +pi.reduce((s,i)=>s+(i.subtotal||i.total),0).toFixed(2),
+        +pi.reduce((s,i)=>s+(i.vat||0),0).toFixed(2),
+        +pi.reduce((s,i)=>s+i.total,0).toFixed(2),
+        '','','',
+      ],
+    ];
+    const ws = XLSX.utils.aoa_to_sheet(pRows);
+    ws['!cols'] = [
+      {wch:5},{wch:16},{wch:13},{wch:14},{wch:18},
+      {wch:13},{wch:12},{wch:18},{wch:16},{wch:18},
+      {wch:13},{wch:16},{wch:18}
+    ];
+    const sheetName = p.name.replace('نظافة بلدية ','').slice(0,31);
+    XLSX.utils.book_append_sheet(wb, ws, sheetName);
+  });
+
+  XLSX.writeFile(wb, `تقرير_المحروقات_${m}.xlsx`);
+}
+
+
+// ══════════════════════════════════════════════════════════════
+// USERS MANAGEMENT
+// ══════════════════════════════════════════════════════════════
+function renderUsersTable(){
+  document.getElementById('usersTbody').innerHTML=users.map((u,idx)=>`<tr>
+    <td><strong>${u.username}</strong></td><td>${u.fullname}</td>
+    <td>${u.project==='all'?'<span class="badge badge-blue">كل المشاريع</span>':`<span class="badge" style="background:${projColor(u.project)}22;color:${projColor(u.project)}">${projName(u.project)}</span>`}</td>
+    <td><span class="badge ${u.role==='gm'?'badge-yellow':u.role==='supervisor'?'badge-blue':'badge-green'}">${u.role==='gm'?'👔 مدير عام':u.role==='supervisor'?'👨‍💼 مشرف':'👷 موظف'}</span></td>
+    <td><small style="color:var(--muted)">${u.lastLogin}</small></td>
+    <td style="display:flex;gap:.4rem">
+      <button class="btn btn-secondary btn-sm" onclick="editUser(${idx})">✏️ تعديل</button>
+      ${u.username==='admin'?'<span style="font-size:.72rem;color:var(--muted);padding:.35rem">محمي</span>':`<button class="btn btn-sm" style="background:#fde8e6;color:var(--red)" onclick="deleteUser(${idx})">🗑️</button>`}
+    </td>
+  </tr>`).join('');
+}
+function populateProjectSelect(selId, selected=''){
+  const sel=document.getElementById(selId);
+  sel.innerHTML='';
+  if(selId==='u_project') sel.add(new Option('كل المشاريع (مدير عام)','all'));
+  PROJECTS.forEach(p=>sel.add(new Option(p.name,p.id)));
+  if(selected) sel.value=selected;
+}
+function openAddUser(){
+  editUIdx=-1;
+  document.getElementById('uModalTitle').textContent='➕ إضافة مستخدم';
+  ['u_username','u_fullname','u_pass','u_pass2'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('u_username').readOnly=false;
+  document.getElementById('pReq').style.display='inline';
+  document.getElementById('pReq2').style.display='inline';
+  document.getElementById('uPassHint').textContent='';
+  document.getElementById('uModalError').innerHTML='';
+  populateProjectSelect('u_project');
+  openModal('userModal');
+}
+function editUser(idx){
+  editUIdx=idx; const u=users[idx];
+  document.getElementById('uModalTitle').textContent='✏️ تعديل مستخدم';
+  document.getElementById('u_username').value=u.username;
+  document.getElementById('u_username').readOnly=true;
+  document.getElementById('u_fullname').value=u.fullname;
+  document.getElementById('u_role').value=u.role;
+  document.getElementById('u_pass').value='';
+  document.getElementById('u_pass2').value='';
+  document.getElementById('pReq').style.display='none';
+  document.getElementById('pReq2').style.display='none';
+  document.getElementById('uPassHint').textContent='اتركها فارغة إذا لا تريد تغيير كلمة السر';
+  document.getElementById('uModalError').innerHTML='';
+  populateProjectSelect('u_project',u.project);
+  openModal('userModal');
+}
+function saveUser(){
+  const username=document.getElementById('u_username').value.trim().toLowerCase();
+  const fullname=document.getElementById('u_fullname').value.trim();
+  const project=document.getElementById('u_project').value;
+  const role=document.getElementById('u_role').value;
+  const pass=document.getElementById('u_pass').value;
+  const pass2=document.getElementById('u_pass2').value;
+  const err=document.getElementById('uModalError');
+  if(!username||!fullname){err.innerHTML=`<div class="alert alert-error">⚠️ أدخل اسم المستخدم والاسم الكامل</div>`;return}
+  if(editUIdx===-1){
+    if(!pass){err.innerHTML=`<div class="alert alert-error">⚠️ أدخل كلمة السر</div>`;return}
+    if(pass!==pass2){err.innerHTML=`<div class="alert alert-error">❌ كلمة السر غير متطابقة</div>`;return}
+    if(users.find(u=>u.username.toLowerCase()===username)){err.innerHTML=`<div class="alert alert-error">❌ اسم المستخدم موجود</div>`;return}
+    users.push({username,fullname,project,role,pass,lastLogin:'—'});
+  } else {
+    if(pass&&pass!==pass2){err.innerHTML=`<div class="alert alert-error">❌ كلمة السر غير متطابقة</div>`;return}
+    users[editUIdx]={...users[editUIdx],fullname,project,role,...(pass?{pass}:{})};
+  }
+  save(); closeModal('userModal'); renderUsersTable();
+}
+function deleteUser(idx){if(!confirm(`حذف "${users[idx].fullname}"؟`))return;users.splice(idx,1);save();renderUsersTable()}
+
+// ══════════════════════════════════════════════════════════════
+// MY VEHICLES (employee)
+// ══════════════════════════════════════════════════════════════
+function renderMyVehicles(){
+  const pid=currentUser.project;
+  document.getElementById('myVehProjectLabel').textContent=projName(pid);
+  const list=vehicles.filter(v=>v.project===pid);
+  const tbody=document.getElementById('myVehiclesTbody');
+  if(!list.length){
+    tbody.innerHTML=`<tr><td colspan="6"><div class="empty-state"><div class="icon">🚗</div><p>لا توجد سيارات — اضغط إضافة سيارة</p></div></td></tr>`;
+    return;
+  }
+  tbody.innerHTML=list.map(v=>{
+    const idx=vehicles.indexOf(v);
+    return `<tr>
+      <td><strong>${v.code}</strong></td><td>${v.type}</td><td>${v.driver}</td>
+      <td>${v.daily} لتر</td><td>${v.monthly} لتر</td>
+      <td style="display:flex;gap:.4rem">
+        <button class="btn btn-secondary btn-sm" onclick="editMyVehicle(${idx})">✏️ تعديل</button>
+        <button class="btn btn-sm" style="background:#fde8e6;color:var(--red)" onclick="deleteMyVehicle(${idx})">🗑️ حذف</button>
+      </td>
+    </tr>`;
+  }).join('');
+}
+function openAddMyVehicle(){
+  editVIdx=-1;
+  document.getElementById('vModalTitle').textContent='➕ إضافة سيارة لمشروعي';
+  ['mv_code','mv_driver'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('mv_daily').value=120;
+  document.getElementById('mv_monthly').value=2800;
+  // Lock project to current user's project
+  populateProjectSelect('mv_project', currentUser.project);
+  document.getElementById('mv_project').disabled=true;
+  openModal('vehicleModal');
+}
+function editMyVehicle(idx){
+  editVIdx=idx; const v=vehicles[idx];
+  document.getElementById('vModalTitle').textContent='✏️ تعديل سيارة';
+  document.getElementById('mv_code').value=v.code;
+  document.getElementById('mv_type').value=v.type;
+  document.getElementById('mv_driver').value=v.driver;
+  document.getElementById('mv_daily').value=v.daily;
+  document.getElementById('mv_monthly').value=v.monthly;
+  populateProjectSelect('mv_project', v.project);
+  document.getElementById('mv_project').disabled=true;
+  openModal('vehicleModal');
+}
+function deleteMyVehicle(idx){
+  if(!confirm('هل أنت متأكد من حذف السيارة؟'))return;
+  vehicles.splice(idx,1); save(); renderMyVehicles(); populateVehicles();
+}
+
+// Override saveVehicle to re-enable project select and refresh right table
+const _origSaveVehicle = saveVehicle;
+saveVehicle = function(){
+  document.getElementById('mv_project').disabled=false;
+  const v={
+    code:document.getElementById('mv_code').value.trim(),
+    type:document.getElementById('mv_type').value,
+    project:document.getElementById('mv_project').value,
+    driver:document.getElementById('mv_driver').value.trim(),
+    meter:document.getElementById('mv_meter').value,
+    stdEff:parseFloat(document.getElementById('mv_std').value)||null,
+    daily:+document.getElementById('mv_daily').value,
+    monthly:+document.getElementById('mv_monthly').value
+  };
+  if(!v.code){alert('أدخل كود السيارة');document.getElementById('mv_project').disabled=(currentUser?.role!=='gm');return}
+  if(editVIdx>=0) vehicles[editVIdx]=v; else vehicles.push(v);
+  save(); closeModal('vehicleModal');
+  if(currentUser?.role==='gm') renderVehiclesTable();
+  else { renderMyVehicles(); populateVehicles(); }
+};
+
+// ══════════════════════════════════════════════════════════════
+// BACKUP & RESTORE
+// ══════════════════════════════════════════════════════════════
+function exportBackup(){
+  const backup={
+    version:'1.0',
+    exportDate:new Date().toLocaleString('ar-SA'),
+    exportedBy:currentUser.fullname,
+    invoices, vehicles,
+  };
+  dl('\uFEFF'+JSON.stringify(backup,null,2), `نسخة_احتياطية_${today()}.json`);
+  document.getElementById('backupAlert').innerHTML=
+    `<div class="alert alert-success">✅ تم تصدير النسخة الاحتياطية بتاريخ ${today()} — احفظها في مكان آمن</div>`;
+  setTimeout(()=>document.getElementById('backupAlert').innerHTML='',5000);
+}
+function importBackup(event){
+  const file=event.target.files[0];
+  if(!file) return;
+  if(!confirm(`⚠️ استيراد "${file.name}" سيستبدل جميع البيانات الحالية. متأكد؟`)){event.target.value='';return}
+  const reader=new FileReader();
+  reader.onload=function(e){
+    try{
+      const backup=JSON.parse(e.target.result);
+      if(!backup.invoices||!backup.vehicles) throw new Error('ملف غير صالح');
+      invoices=backup.invoices||[];
+      vehicles=backup.vehicles||[];
+      save();
+      document.getElementById('backupAlert').innerHTML=
+        `<div class="alert alert-success">✅ تم الاستيراد — ${invoices.length} فاتورة، ${vehicles.length} مركبة | تاريخ النسخة: ${backup.exportDate||'—'}</div>`;
+      setTimeout(()=>document.getElementById('backupAlert').innerHTML='',6000);
+      renderGM();
+    }catch(err){
+      document.getElementById('backupAlert').innerHTML=
+        `<div class="alert alert-error">❌ خطأ في الملف — تأكد إنه نسخة احتياطية صحيحة من النظام</div>`;
+      setTimeout(()=>document.getElementById('backupAlert').innerHTML='',5000);
+    }
+    event.target.value='';
+  };
+  reader.readAsText(file);
+}
+
+async function refreshCloud(){
+  showDBStatus('جاري تحديث البيانات من السحابة...','info');
+  await reloadFromCloud();
+  showDBStatus('✅ تم تحديث البيانات','success');
+  const ap=document.querySelector('.page.active');
+  if(ap) showPage(ap.id);
+}
+
+setToday();
+initDB();
+</script>
+</body>
+</html>
