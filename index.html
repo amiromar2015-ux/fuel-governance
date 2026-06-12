@@ -615,40 +615,35 @@ const PROJECTS = [
 ];
 const PROJECT_MAP = Object.fromEntries(PROJECTS.map(p=>[p.id,p]));
 
-// ── SUPABASE CONFIG ──────────────────────────────────────────
-const SB_URL = 'https://qocxyvfffsnywwlqcqfx.supabase.co';
-const SB_KEY = 'sb_publishable_MzqbfMpCbl08WBFzu3AvZg_3dIMO5iS';
+// ── FIREBASE REALTIME DATABASE CONFIG ────────────────────────
+const FB_URL = 'https://fuel-governance-default-rtdb.firebaseio.com';
 
-function sbHeaders(){
-  return {
-    'apikey': SB_KEY,
-    'Authorization': `Bearer ${SB_KEY}`,
-    'Content-Type': 'application/json',
-    'Accept': 'application/json'
-  };
-}
-
-async function sbGet(table) {
+async function fbGet(path) {
   try {
-    const r = await fetch(`${SB_URL}/rest/v1/${table}?select=*`, { headers: sbHeaders() });
+    const r = await fetch(`${FB_URL}/${path}.json`);
     if (!r.ok) return null;
-    return await r.json();
+    const data = await r.json();
+    if (!data) return [];
+    if (Array.isArray(data)) return data.filter(Boolean);
+    return Object.values(data);
   } catch { return null; }
 }
-async function sbUpsert(table, data) {
+async function fbSet(path, data) {
   try {
-    const r = await fetch(`${SB_URL}/rest/v1/${table}`, {
-      method: 'POST',
-      headers: { ...sbHeaders(), 'Prefer': 'resolution=merge-duplicates,return=minimal' },
+    const r = await fetch(`${FB_URL}/${path}.json`, {
+      method: 'PUT',
+      headers: {'Content-Type': 'application/json'},
       body: JSON.stringify(data)
     });
     return r.ok;
   } catch { return false; }
 }
-async function sbDelete(table, id) {
+async function fbPush(path, data) {
   try {
-    const r = await fetch(`${SB_URL}/rest/v1/${table}?id=eq.${id}`, {
-      method: 'DELETE', headers: sbHeaders()
+    const r = await fetch(`${FB_URL}/${path}.json`, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(data)
     });
     return r.ok;
   } catch { return false; }
@@ -685,26 +680,22 @@ let dbReady = false;
 // ── INIT DB ──────────────────────────────────────────────────
 async function initDB() {
   showDBStatus('جاري الاتصال بقاعدة البيانات...', 'info');
-
-  // Try to load from Supabase
-  const [dbInv, dbVeh, dbUsr] = await Promise.all([
-    sbGet('invoices'), sbGet('vehicles'), sbGet('users')
-  ]);
-
-  if (dbVeh !== null) {
-    // Supabase connected ✅
-    invoices = dbInv || [];
-    vehicles = dbVeh.length ? dbVeh : DEFAULT_VEHICLES;
-    users    = dbUsr && dbUsr.length ? dbUsr : DEFAULT_USERS;
-
-    // Seed default data if empty
-    if (!dbVeh.length) await sbUpsert('vehicles', DEFAULT_VEHICLES);
-    if (!dbUsr || !dbUsr.length) await sbUpsert('users', DEFAULT_USERS);
-
-    dbReady = true;
-    showDBStatus('☁️ متصل بالسحابة — البيانات مشتركة بين جميع الأجهزة', 'success');
-  } else {
-    // Fallback to localStorage
+  try {
+    const [dbInv, dbVeh, dbUsr] = await Promise.all([
+      fbGet('invoices'), fbGet('vehicles'), fbGet('users')
+    ]);
+    if (dbVeh !== null) {
+      invoices = dbInv || [];
+      vehicles = dbVeh.length ? dbVeh : DEFAULT_VEHICLES;
+      users    = dbUsr && dbUsr.length ? dbUsr : DEFAULT_USERS;
+      if (!dbVeh.length) await fbSet('vehicles', DEFAULT_VEHICLES);
+      if (!dbUsr || !dbUsr.length) await fbSet('users', DEFAULT_USERS);
+      dbReady = true;
+      showDBStatus('☁️ متصل بالسحابة — البيانات مشتركة بين جميع الأجهزة', 'success');
+    } else {
+      throw new Error('Firebase not available');
+    }
+  } catch {
     invoices = JSON.parse(localStorage.getItem('fuel_inv') || '[]');
     vehicles = JSON.parse(localStorage.getItem('fuel_veh') || 'null') || DEFAULT_VEHICLES;
     users    = JSON.parse(localStorage.getItem('fuel_usr') || 'null') || DEFAULT_USERS;
@@ -713,16 +704,7 @@ async function initDB() {
   }
 }
 
-function showDBStatus(msg, type) {
-  const el = document.getElementById('dbStatusBar');
-  if (!el) return;
-  const cls = type==='success'?'als':type==='warn'?'alw':'ali';
-  el.innerHTML = `<div class="alert ${cls}" style="margin:0;border-radius:0;justify-content:center;font-size:.8rem">${msg}</div>`;
-  if (type === 'success') setTimeout(() => el.innerHTML = '', 4000);
-}
-
 async function save() {
-  // Always save to localStorage as backup
   localStorage.setItem('fuel_inv', JSON.stringify(invoices));
   localStorage.setItem('fuel_veh', JSON.stringify(vehicles));
   localStorage.setItem('fuel_usr', JSON.stringify(users));
@@ -731,33 +713,33 @@ async function save() {
 async function saveInvoice(inv) {
   invoices.push(inv);
   localStorage.setItem('fuel_inv', JSON.stringify(invoices));
-  if (dbReady) await sbUpsert('invoices', [inv]);
+  if (dbReady) await fbSet('invoices', invoices);
 }
 
 async function saveVehicleDB(v) {
-  if (dbReady) await sbUpsert('vehicles', [v]);
+  if (dbReady) await fbSet('vehicles', vehicles);
   save();
 }
 
 async function saveUserDB(u) {
-  if (dbReady) await sbUpsert('users', [u]);
+  if (dbReady) await fbSet('users', users);
   save();
 }
 
 async function deleteVehicleDB(id) {
-  if (dbReady) await sbDelete('vehicles', id);
+  if (dbReady) await fbSet('vehicles', vehicles);
   save();
 }
 
 async function deleteUserDB(id) {
-  if (dbReady) await sbDelete('users', id);
+  if (dbReady) await fbSet('users', users);
   save();
 }
 
 async function reloadFromCloud() {
   if (!dbReady) return;
   const [dbInv, dbVeh, dbUsr] = await Promise.all([
-    sbGet('invoices'), sbGet('vehicles'), sbGet('users')
+    fbGet('invoices'), fbGet('vehicles'), fbGet('users')
   ]);
   if (dbInv !== null) invoices = dbInv;
   if (dbVeh !== null) vehicles = dbVeh;
